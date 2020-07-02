@@ -6,21 +6,24 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Data;
-import org.example.beatmybet.entity.Category;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
-public class CategoryDTO {
+
+public class EventDTO {
     private Long id;
-    private String name;
-
-
+    private String category;
+    private String superCategory;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date_start;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date_stop;
+//    private Integer amountOfStavka; //?
 }

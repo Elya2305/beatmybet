@@ -1,0 +1,5 @@
+# Project exclude paths
+/target/
+.idea/
+beatmybet4.iml
+src/main/resources/application.properties
