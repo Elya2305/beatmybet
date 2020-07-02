@@ -1,4 +1,5 @@
 package org.example.beatmybet.exceptions;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -6,11 +7,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class TypeNotFoundAdvice {
+public class NotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(TypeNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(TypeNotFoundException ex) {
+    String employeeNotFoundHandler(NotFoundException ex) {
         return ex.getMessage();
     }
 }
