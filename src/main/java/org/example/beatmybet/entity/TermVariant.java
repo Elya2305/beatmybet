@@ -1,18 +1,28 @@
-package org.example.beatmybet.dto;
+package org.example.beatmybet.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Builder;
 import lombok.Data;
 
+import javax.persistence.*;
+
+@Entity
 @Data
-@Builder
+@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
-public class CategoryDTO {
+@Table(name = "term_variant")
+public class TermVariant {
+    @Id
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_term")
+    private Term term;
+
+    @Column(name = "name_var")
     private String name;
+
 }

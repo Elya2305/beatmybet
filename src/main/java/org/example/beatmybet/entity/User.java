@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.example.beatmybet.entity.financy.Account;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,6 +23,10 @@ import java.util.Set;
 public class User {
     @Id
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_account")
+    private Account account;
 
     @Column(name = "dt")
     @Temporal(TemporalType.TIMESTAMP)
