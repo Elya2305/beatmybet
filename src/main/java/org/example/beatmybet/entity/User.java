@@ -1,32 +1,26 @@
 package org.example.beatmybet.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.example.beatmybet.entity.financy.Account;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
-@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
+//@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
     @Id
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_account")
-    private Account account;
 
     @Column(name = "dt")
     @Temporal(TemporalType.TIMESTAMP)

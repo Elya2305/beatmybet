@@ -2,9 +2,9 @@ package org.example.beatmybet.entity;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.example.beatmybet.entity.financy.Account;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -13,15 +13,11 @@ import java.util.Date;
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 //@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "bid")
-public class Bid {
+public class Bid implements Serializable {
     @Id
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_account")
-    private Account account;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_term")
     private Term term;
 

@@ -1,7 +1,6 @@
 package org.example.beatmybet.entity;
 
 import lombok.Data;
-import org.example.beatmybet.entity.financy.Account;
 
 import javax.persistence.*;
 
@@ -15,9 +14,6 @@ public class FinanceType {
     @Id
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_account")
-    private Account account;
-
+    @Column(name = "name")
     private String name;
 }

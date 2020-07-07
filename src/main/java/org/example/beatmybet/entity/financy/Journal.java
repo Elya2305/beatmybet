@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,4 +23,7 @@ public class Journal {
     @ManyToOne
     @JoinColumn(name = "id_type_operation")
     private TypeOperation typeOperation;
+
+    @OneToMany(mappedBy = "journal")
+    private Set<Posting> postings;
 }
