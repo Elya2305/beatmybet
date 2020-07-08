@@ -1,8 +1,8 @@
 @AnyMetaDef(name = "EntityDescriptionMetaDef", metaType = "string", idType = "int",
         metaValues = {
-                @MetaValue(value = "user", targetEntity = User.class),
-                @MetaValue(value = "bid", targetEntity = Bid.class),
-                @MetaValue(value = "finance_type", targetEntity = FinanceType.class),
+                @MetaValue(value = "USER", targetEntity = User.class),
+                @MetaValue(value = "BID", targetEntity = Bid.class),
+                @MetaValue(value = "FINANCE_TYPE", targetEntity = FinanceType.class),
 
         })
 package org.example.beatmybet;

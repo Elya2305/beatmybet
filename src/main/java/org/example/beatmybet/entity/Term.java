@@ -1,7 +1,9 @@
 package org.example.beatmybet.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
@@ -20,10 +22,12 @@ public class Term {
     @Id
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_event")
     private Event event;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
@@ -35,6 +39,7 @@ public class Term {
     @Column(name = "name_term")
     private String name;
 
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "term")
     List<TermVariant> variants;
 }

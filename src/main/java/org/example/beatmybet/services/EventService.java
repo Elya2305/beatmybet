@@ -2,6 +2,7 @@ package org.example.beatmybet.services;
 
 import org.example.beatmybet.dto.EventDTO;
 import org.example.beatmybet.entity.Event;
+import org.example.beatmybet.exceptions.NotFoundException;
 import org.example.beatmybet.repositories.CategoryRepository;
 import org.example.beatmybet.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -34,9 +36,14 @@ public class EventService {
         );
 
         System.out.println("Event: "  + event);
-
-
     }
+
+    public EventDTO getEventById(Long id) {
+        return mapToEventDTO.apply(eventRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("event ", id)));
+    }
+
+
     Function<Event, EventDTO> mapToEventDTO = (event -> EventDTO.builder()
             .category(event.getCategory().getName())
             .superCategory(event.getCategory().getCategory().getName())

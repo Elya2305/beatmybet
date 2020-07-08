@@ -1,5 +1,7 @@
 package org.example.beatmybet.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class Event {
     @Id
     private Long id;
 
+    @JsonManagedReference
     @NonNull
     @ManyToOne
     @JoinColumn(name = "idcat")
@@ -30,6 +33,7 @@ public class Event {
     private Date date;
 
 //    @NonNull
+//    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
@@ -48,6 +52,7 @@ public class Event {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateEnd;
 
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
     List<Term> terms;
 

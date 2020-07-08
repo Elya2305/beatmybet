@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired UserRepository userRepository;
-
     @Autowired UserService userService;
 
     @GetMapping("/{id}")
     public User get(@PathVariable("id") Long id){
+        User user = userService.findById(id);
+        System.out.println(user);
+        return user;
+    }
+
+    @GetMapping("/2/{id}")
+    public User get2(@PathVariable("id") Long id){
         return userService.findById(id);
     }
 }
