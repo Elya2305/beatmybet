@@ -27,7 +27,7 @@ public class Bid implements Serializable {
     private Date date;
 
     @Column(name = "koef")
-    private Double koef;
+    private Float koef;
 
     @ManyToOne
     @JoinColumn(name = "id_var")

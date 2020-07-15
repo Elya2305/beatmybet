@@ -3,3 +3,4 @@
 .idea
 beatmybet4.iml
 src/main/resources/application.properties
+src/main/resources/test.sql

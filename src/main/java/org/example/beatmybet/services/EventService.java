@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -22,7 +22,10 @@ public class EventService {
     @Autowired CategoryRepository categoryRepository;
 
     public Set<EventDTO> getAllEvents() {
-        return eventRepository.findAll().stream().map(mapToEventDTO).collect(toSet());
+        return eventRepository.findAllByOrderByDateDesc()
+                .stream()
+                .map(mapToEventDTO)
+                .collect(toSet());
     }
 
     //add user
@@ -30,7 +33,7 @@ public class EventService {
         Event event = new Event(
                 categoryRepository.findByName(eventDto.getCategory()),
                 new Date(),
-                eventDto.getName(),
+                eventDto.getContent(),
                 eventDto.getDate_stop(),
                 eventDto.getDate_end()
         );
@@ -43,14 +46,16 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException("event ", id)));
     }
 
+    public List<EventDTO> getTop3EventDTO(){
+
+        return null;
+    }
 
     Function<Event, EventDTO> mapToEventDTO = (event -> EventDTO.builder()
             .category(event.getCategory().getName())
             .superCategory(event.getCategory().getCategory().getName())
             .date_stop(event.getDateStop())
-            .date_end(event.getDateEnd())
-            .id(event.getId())
-            .name(event.getName())
+            .content(event.getName())
+            .amountOfBids(eventRepository.countAmountOfBids(event.getId()))
             .build());
-
 }

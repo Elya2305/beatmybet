@@ -1,14 +1,10 @@
 package org.example.beatmybet.entity.financy;
 
 import lombok.Data;
-import org.example.beatmybet.entity.Bid;
-import org.example.beatmybet.entity.User;
 import org.hibernate.annotations.Any;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Optional;
 
 @Entity
 @Data
@@ -18,6 +14,7 @@ import java.util.Optional;
 @Table(name = "posting")
 public class Posting {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Any(

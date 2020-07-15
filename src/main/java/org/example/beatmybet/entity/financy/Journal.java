@@ -1,5 +1,6 @@
 package org.example.beatmybet.entity.financy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.ToString;
 
@@ -26,6 +27,7 @@ public class Journal {
     @JoinColumn(name = "id_type_operation")
     private TypeOperation typeOperation;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "journal")
     private Set<Posting> postings;
 }

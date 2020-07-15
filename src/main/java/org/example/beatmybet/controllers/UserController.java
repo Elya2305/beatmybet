@@ -27,4 +27,9 @@ public class UserController {
     public User get2(@PathVariable("id") Long id){
         return userService.findById(id);
     }
+
+    @GetMapping("/balance/{id}")
+    public double getBalance(@PathVariable long id){
+        return userService.getBalance(get(id));
+    }
 }

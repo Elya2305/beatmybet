@@ -27,3 +27,4 @@ public class TypeOperation {
     @OneToMany(mappedBy = "typeOperation")
     private Set<Journal> journals;
 }
+

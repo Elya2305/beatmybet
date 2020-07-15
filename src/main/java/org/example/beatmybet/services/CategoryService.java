@@ -7,8 +7,10 @@ import org.example.beatmybet.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -18,10 +20,31 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public Set<CategoryDTO> getAllCategories() {
+    public Set<Serializable> getAllCategoriesForHomePage() {
         return categoryRepository.findAll()
                 .stream()
-                .map(mapToCategoryDTO).collect(toSet());
+                .filter(o -> o.getCategory() == null)
+                .map(mapToCategoryDTO2)
+                .collect(Collectors.toSet());
+    }
+    public Set<CategoryDTO> getAllCategoriesForHomePage2() {
+        return categoryRepository.findAll()
+                .stream()
+                .filter(o -> o.getCategory() == null)
+                .map(mapToCategoryDTO2)
+                .collect(Collectors.toSet());
+    }
+//    public Set<CategoryDTO> getAllCategories() {
+//        return categoryRepository.findAll()
+//                .stream()
+//                .map(mapToCategoryDTO).collect(toSet());
+//    }
+        public Set<CategoryDTO> getAllCategories() {
+            return categoryRepository.findAll()
+                    .stream()
+                    .filter(o -> o.getCategory() == null)
+                    .map(mapToCategoryDTO2)
+                    .collect(Collectors.toSet());
     }
 
     public Set<CategoryDTO> getMainCategories() {
@@ -46,6 +69,21 @@ public class CategoryService {
     }
 
     Function<Category, CategoryDTO> mapToCategoryDTO = (category -> CategoryDTO.builder()
-            .id(category.getId()).name(category.getName()).build());
+            .name(category.getName())
+//            .subCategories(category.getSubCategories())
+            .build());
+
+    Function<Category, CategoryDTO> mapToCategoryDTO2 = (category -> CategoryDTO.builder()
+            .name(category.getName())
+            .subCategories(category.getSubCategories()
+                    .stream()
+                    .map(Category::getName)
+                    .collect(Collectors.toSet()))
+            .build());
+
+
+
+
+
 
 }

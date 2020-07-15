@@ -22,7 +22,6 @@ public class CategoryController {
     @GetMapping("/all")
     public Set<CategoryDTO> getAllCategories(){
         return categoryService.getAllCategories();
-
     }
 
     @GetMapping("/main")
