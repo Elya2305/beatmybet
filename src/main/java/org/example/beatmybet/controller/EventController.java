@@ -1,9 +1,9 @@
-package org.example.beatmybet.controllers;
+package org.example.beatmybet.controller;
 
 import org.example.beatmybet.dto.EventDTO;
 import org.example.beatmybet.entity.Event;
-import org.example.beatmybet.repositories.EventRepository;
-import org.example.beatmybet.services.EventService;
+import org.example.beatmybet.repository.EventRepository;
+import org.example.beatmybet.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

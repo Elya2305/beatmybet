@@ -1,9 +1,9 @@
-package org.example.beatmybet.services;
+package org.example.beatmybet.service;
 
 import org.example.beatmybet.dto.CategoryDTO;
 import org.example.beatmybet.entity.Category;
-import org.example.beatmybet.exceptions.NotFoundException;
-import org.example.beatmybet.repositories.CategoryRepository;
+import org.example.beatmybet.exception.NotFoundException;
+import org.example.beatmybet.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

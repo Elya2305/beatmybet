@@ -1,9 +1,7 @@
-package org.example.beatmybet.controllers;
+package org.example.beatmybet.controller;
 
 import org.example.beatmybet.entity.User;
-import org.example.beatmybet.exceptions.NotFoundException;
-import org.example.beatmybet.repositories.UserRepository;
-import org.example.beatmybet.services.UserService;
+import org.example.beatmybet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +26,8 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping("/balance/{id}")
-    public double getBalance(@PathVariable long id){
-        return userService.getBalance(get(id));
-    }
+//    @GetMapping("/balance/{id}")
+//    public double getBalance(@PathVariable long id){
+//        return userService.getBalance(get(id));
+//    }
 }

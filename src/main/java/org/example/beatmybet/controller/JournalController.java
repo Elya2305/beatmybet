@@ -1,7 +1,7 @@
-package org.example.beatmybet.controllers;
+package org.example.beatmybet.controller;
 
 import org.example.beatmybet.entity.financy.Journal;
-import org.example.beatmybet.repositories.JournalRepository;
+import org.example.beatmybet.repository.JournalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

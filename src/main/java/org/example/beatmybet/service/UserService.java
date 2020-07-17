@@ -1,11 +1,10 @@
-package org.example.beatmybet.services;
+package org.example.beatmybet.service;
 
 import org.example.beatmybet.dto.BalanceDTO;
 import org.example.beatmybet.entity.User;
-import org.example.beatmybet.entity.financy.Posting;
-import org.example.beatmybet.exceptions.NotFoundException;
-import org.example.beatmybet.repositories.PostingRepository;
-import org.example.beatmybet.repositories.UserRepository;
+import org.example.beatmybet.exception.NotFoundException;
+import org.example.beatmybet.repository.PostingRepository;
+import org.example.beatmybet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

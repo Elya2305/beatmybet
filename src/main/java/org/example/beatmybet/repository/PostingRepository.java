@@ -1,12 +1,10 @@
-package org.example.beatmybet.repositories;
+package org.example.beatmybet.repository;
 
 import org.example.beatmybet.entity.User;
 import org.example.beatmybet.entity.financy.Posting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.io.Serializable;
 
 public interface PostingRepository extends JpaRepository<Posting, Long> {
 

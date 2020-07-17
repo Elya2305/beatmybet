@@ -1,6 +1,6 @@
-package org.example.beatmybet.services;
+package org.example.beatmybet.service;
 
-import org.example.beatmybet.repositories.TermRepository;
+import org.example.beatmybet.repository.TermRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

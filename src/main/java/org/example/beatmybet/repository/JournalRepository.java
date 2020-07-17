@@ -1,4 +1,4 @@
-package org.example.beatmybet.repositories;
+package org.example.beatmybet.repository;
 
 import org.example.beatmybet.entity.financy.Journal;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
-package org.example.beatmybet.controllers;
+package org.example.beatmybet.controller;
 
-import org.example.beatmybet.services.TermService;
+import org.example.beatmybet.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

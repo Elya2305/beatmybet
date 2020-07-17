@@ -1,13 +1,10 @@
-package org.example.beatmybet.controllers;
+package org.example.beatmybet.controller;
 
 
 import org.example.beatmybet.dto.CategoryDTO;
-import org.example.beatmybet.services.CategoryService;
+import org.example.beatmybet.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -15,6 +12,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/category")
+@CrossOrigin(origins = "*")
 public class CategoryController {
 
     @Autowired CategoryService categoryService;

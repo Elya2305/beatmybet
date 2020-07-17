@@ -1,4 +1,4 @@
-package org.example.beatmybet.repositories;
+package org.example.beatmybet.repository;
 
 import org.example.beatmybet.entity.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
