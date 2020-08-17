@@ -18,8 +18,10 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class EventService {
 
-    @Autowired EventRepository eventRepository;
-    @Autowired CategoryRepository categoryRepository;
+    @Autowired
+    EventRepository eventRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     public Set<EventDTO> getAllEvents() {
         return eventRepository.findAllByOrderByDateDesc()
@@ -38,7 +40,7 @@ public class EventService {
                 eventDto.getDate_end()
         );
 
-        System.out.println("Event: "  + event);
+        System.out.println("Event: " + event);
     }
 
     public EventDTO getEventById(Long id) {
@@ -46,7 +48,7 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException("event ", id)));
     }
 
-    public List<EventDTO> getTop3EventDTO(){
+    public List<EventDTO> getTop3EventDTO() {
 
         return null;
     }

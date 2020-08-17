@@ -1,17 +1,18 @@
 package org.example.beatmybet.exception;
 
+import org.example.beatmybet.dto.ResponseStatusDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class NotFoundAdvice {
-    @ResponseBody
+
     @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(NotFoundException ex) {
-        return ex.getMessage();
+    public ResponseStatusDto notFound(Exception e) {
+        e.printStackTrace();
+        return new ResponseStatusDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 }

@@ -9,9 +9,6 @@ import java.util.Date;
 
 @Entity
 @Data
-//@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "bid")
 public class Bid implements Serializable {
     @Id
