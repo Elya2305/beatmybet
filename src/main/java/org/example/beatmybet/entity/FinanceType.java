@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "finance_type")
 public class FinanceType {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")

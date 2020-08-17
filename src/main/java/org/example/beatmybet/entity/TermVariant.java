@@ -16,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "term_variant")
 public class TermVariant {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

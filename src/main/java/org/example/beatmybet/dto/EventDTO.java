@@ -5,33 +5,43 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 public class EventDTO {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long id;
+
     private String content;
 
     private String category;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String superCategory;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date_stop;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dateStop;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date_end;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private LocalDate dataEnd;
 
-    private TermDTO topTerm;
-
-    private Integer amountOfBids;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private int amountOfBids;
 }
 

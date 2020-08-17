@@ -5,32 +5,32 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
 @RequiredArgsConstructor
-//@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "events")
 public class Event {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonManagedReference
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idcat")
     private Category category;
 
-    @NonNull
     @Column(name = "dt")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @CreationTimestamp
+    private LocalDate date;
 
 //    @NonNull
 //    @JsonManagedReference
@@ -44,13 +44,11 @@ public class Event {
 
     @NonNull
     @Column(name = "data_stop")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateStop;
+    private LocalDate dateStop;
 
     @NonNull
     @Column(name = "data_end")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateEnd;
+    private LocalDate dateEnd;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")

@@ -20,6 +20,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "dt")

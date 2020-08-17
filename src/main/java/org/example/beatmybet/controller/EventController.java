@@ -1,10 +1,12 @@
 package org.example.beatmybet.controller;
 
 import org.example.beatmybet.dto.EventDTO;
+import org.example.beatmybet.dto.ResponseStatusDto;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.repository.EventRepository;
 import org.example.beatmybet.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -13,38 +15,23 @@ import java.util.Set;
 @RequestMapping("/event")
 public class EventController {
 
-    @Autowired EventService eventService;
-    @Autowired EventRepository eventRepository;
+    @Autowired
+    EventService eventService;
 
     @GetMapping("/all")
-    public Set<EventDTO> getAllEvents(){
+    public Set<EventDTO> getAllEvents() {
         return eventService.getAllEvents();
     }
 
     @GetMapping("/{id}")
-    public EventDTO getEventById(@PathVariable("id") Long id){
-        return eventService.getEventById(id);
-    }
-
-    @GetMapping("/2/{id}")
-    public Event getEventById2(@PathVariable("id") Long id){
-        return eventRepository.findById(id).get();
+    public EventDTO getEventById(@PathVariable("id") Long id) {
+        return eventService.getById(id);
     }
 
     @PostMapping("/add") //@Principal user
-    public EventDTO addEvent(@RequestBody EventDTO eventDto){
+    public ResponseStatusDto addEvent(EventDTO eventDto) {
         eventService.addEvent(eventDto);
-        System.out.println(eventDto);
-/*        Event event = new Event(
-                categoryRepository.findByName(eventDto.getCategory()),
-                eventDto.getDate(),
-                eventDto.getName(),
-                eventDto.getDate_stop(),
-                eventDto.getDate_end()
-        );
-        System.out.println(event);*/
-        return eventDto;
+        return new ResponseStatusDto(HttpStatus.OK.value(),
+                "new event " + eventDto.getContent() + " added");
     }
-
-
 }

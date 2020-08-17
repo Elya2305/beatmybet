@@ -12,6 +12,7 @@ import java.util.Date;
 @Table(name = "bid")
 public class Bid implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne

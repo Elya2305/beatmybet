@@ -20,6 +20,7 @@ import java.util.List;
 @Table(name = "term")
 public class Term {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonManagedReference

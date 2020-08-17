@@ -25,4 +25,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                         "WHERE t.id_event =:id)",
             nativeQuery = true)
     int getAmountOfBid(@Param("id") Long id);
+
+
 }

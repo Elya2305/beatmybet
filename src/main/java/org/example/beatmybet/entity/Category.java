@@ -27,6 +27,7 @@ public class Category {
     @Getter
     @Setter
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter

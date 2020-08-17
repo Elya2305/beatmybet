@@ -5,6 +5,7 @@ import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.CategoryRepository;
 import org.example.beatmybet.repository.EventRepository;
+import org.example.beatmybet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,12 @@ public class EventService {
 
     @Autowired
     EventRepository eventRepository;
+
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public Set<EventDTO> getAllEvents() {
         return eventRepository.findAllByOrderByDateDesc()
@@ -32,31 +37,30 @@ public class EventService {
 
     //add user
     public void addEvent(EventDTO eventDto) {
-        Event event = new Event(
-                categoryRepository.findByName(eventDto.getCategory()),
-                new Date(),
-                eventDto.getContent(),
-                eventDto.getDate_stop(),
-                eventDto.getDate_end()
-        );
+        Event event = new Event();
+
+        event.setName(eventDto.getContent());
+        event.setCategory(categoryRepository.findByName(eventDto.getCategory()));
+        event.setUser(userRepository.findById(1L).get());
+        event.setDateEnd(eventDto.getDataEnd());
+        event.setDateStop(eventDto.getDateStop());
 
         System.out.println("Event: " + event);
+
+        eventRepository.save(event);
     }
 
-    public EventDTO getEventById(Long id) {
+    public EventDTO getById(Long id) {
         return mapToEventDTO.apply(eventRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("event ", id)));
-    }
-
-    public List<EventDTO> getTop3EventDTO() {
-
-        return null;
+                .orElseThrow(() -> new NotFoundException("event", id)));
     }
 
     Function<Event, EventDTO> mapToEventDTO = (event -> EventDTO.builder()
+            .id(event.getId())
             .category(event.getCategory().getName())
             .superCategory(event.getCategory().getCategory().getName())
-            .date_stop(event.getDateStop())
+            .dataEnd(event.getDateEnd())
+            .dateStop(event.getDateStop())
             .content(event.getName())
             .amountOfBids(eventRepository.countAmountOfBids(event.getId()))
             .build());
