@@ -7,16 +7,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Set;
-
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
-public class CategoryDTO implements Serializable {
+public class SubCategoryDto {
     private long id;
     private String name;
-    private Set<SubCategoryDto> subCategories;
 }

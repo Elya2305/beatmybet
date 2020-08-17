@@ -1,6 +1,7 @@
 package org.example.beatmybet.service;
 
 import org.example.beatmybet.dto.CategoryDTO;
+import org.example.beatmybet.dto.SubCategoryDto;
 import org.example.beatmybet.entity.Category;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.CategoryRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,27 +26,24 @@ public class CategoryService {
         return categoryRepository.findAll()
                 .stream()
                 .filter(o -> o.getCategory() == null)
-                .map(mapToCategoryDTO2)
+                .map(mapToCategoryDTO)
                 .collect(Collectors.toSet());
     }
+
     public Set<CategoryDTO> getAllCategoriesForHomePage2() {
         return categoryRepository.findAll()
                 .stream()
                 .filter(o -> o.getCategory() == null)
-                .map(mapToCategoryDTO2)
+                .map(mapToCategoryDTO)
                 .collect(Collectors.toSet());
     }
-//    public Set<CategoryDTO> getAllCategories() {
-//        return categoryRepository.findAll()
-//                .stream()
-//                .map(mapToCategoryDTO).collect(toSet());
-//    }
-        public Set<CategoryDTO> getAllCategories() {
-            return categoryRepository.findAll()
-                    .stream()
-                    .filter(o -> o.getCategory() == null)
-                    .map(mapToCategoryDTO2)
-                    .collect(Collectors.toSet());
+
+    public Set<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .filter(o -> o.getCategory() == null)
+                .map(mapToCategoryDTO)
+                .collect(Collectors.toSet());
     }
 
     public Set<CategoryDTO> getMainCategories() {
@@ -69,21 +68,12 @@ public class CategoryService {
     }
 
     Function<Category, CategoryDTO> mapToCategoryDTO = (category -> CategoryDTO.builder()
+            .id(category.getId())
             .name(category.getName())
-//            .subCategories(category.getSubCategories())
+            .subCategories(category.getSubCategories().stream()
+                    .map(subCat -> SubCategoryDto.builder()
+                            .id(subCat.getId())
+                            .name(subCat.getName())
+                            .build()).collect(Collectors.toSet()))
             .build());
-
-    Function<Category, CategoryDTO> mapToCategoryDTO2 = (category -> CategoryDTO.builder()
-            .name(category.getName())
-            .subCategories(category.getSubCategories()
-                    .stream()
-                    .map(Category::getName)
-                    .collect(Collectors.toSet()))
-            .build());
-
-
-
-
-
-
 }
