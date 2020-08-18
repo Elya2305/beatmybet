@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -34,13 +36,13 @@ public class Term {
     private User user;
 
     @Column(name = "dt")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @CreationTimestamp
+    private LocalDate date;
 
     @Column(name = "name_term")
     private String name;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "term")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "term", cascade = CascadeType.ALL)
     List<TermVariant> variants;
 }

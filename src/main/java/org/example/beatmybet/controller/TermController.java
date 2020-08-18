@@ -1,10 +1,11 @@
 package org.example.beatmybet.controller;
 
+import org.example.beatmybet.dto.ResponseStatusDto;
+import org.example.beatmybet.dto.TermDTO;
 import org.example.beatmybet.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/term")
@@ -12,9 +13,10 @@ public class TermController {
 
     @Autowired TermService termService;
 
-    @GetMapping("/query")
-    public String query(){
-        termService.query();
-        return "OK";
+    @PostMapping("/{idEvent}/add")
+    public ResponseStatusDto create(@PathVariable long idEvent, @RequestBody TermDTO termDTO) {
+        termService.create(termDTO, idEvent);
+        return new ResponseStatusDto(HttpStatus.OK.value(),
+                "term '" + termDTO.getName() + "' was added");
     }
 }

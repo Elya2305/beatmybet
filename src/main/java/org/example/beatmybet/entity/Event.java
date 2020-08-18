@@ -51,7 +51,7 @@ public class Event {
     private LocalDate dateEnd;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", cascade = CascadeType.ALL)
     List<Term> terms;
 
     public Event() {
