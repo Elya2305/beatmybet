@@ -2,10 +2,7 @@ package org.example.beatmybet.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,6 +15,7 @@ import java.util.List;
 @Entity
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "events")
 public class Event {
     @Id
@@ -57,7 +55,7 @@ public class Event {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", cascade = CascadeType.ALL)
     List<Term> terms;
 
-    public Event() {
+    public enum Order{
+        date, popular
     }
-
 }

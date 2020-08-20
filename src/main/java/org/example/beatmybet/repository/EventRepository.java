@@ -17,12 +17,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Integer countAmountOfBids(@Param("id") Long id);
 
     List<Event> findAllByOrderByDateDesc();
-
-    @Query(value =  "SELECT COUNT(*) FROM bid b " +
-                    "WHERE id_term IN ( " +
-                        "SELECT t.id " +
-                        "FROM term t " +
-                        "WHERE t.id_event =:id)",
-            nativeQuery = true)
-    int getAmountOfBid(@Param("id") Long id);
 }

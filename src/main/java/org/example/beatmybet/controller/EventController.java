@@ -19,10 +19,11 @@ public class EventController {
     @Autowired
     EventService eventService;
 
-    @GetMapping("/all")
-    public List<EventDTO> getAllEvents() {
-        return eventService.getAllEventWithMostPopularBid();
+    @GetMapping("/all/{order}")
+    public List<EventDTO> getAllEvents(@PathVariable String order) {
+        return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order));
     }
+
 
     @GetMapping("/{id}")
     public EventDTO getEventById(@PathVariable("id") Long id) {

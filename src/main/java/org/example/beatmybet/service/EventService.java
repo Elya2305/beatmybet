@@ -5,7 +5,6 @@ import org.example.beatmybet.dto.EventDTO;
 import org.example.beatmybet.dto.TermDTO;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.entity.Term;
-import org.example.beatmybet.entity.TermVariant;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toSet;
 
 @Service
 public class EventService {
@@ -35,13 +32,6 @@ public class EventService {
     @Autowired
     UserRepository userRepository;
 
-    public Set<EventDTO> getAllEvents() {
-        return eventRepository.findAllByOrderByDateDesc()
-                .stream()
-                .map(mapToEventDTO)
-                .collect(toSet());
-    }
-
     //add user
     public void addEvent(EventDTO eventDto) {
         Event event = new Event();
@@ -60,35 +50,48 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException("event", id)));
     }
 
-    public List<EventDTO> getAllEventWithMostPopularBid() {
+    public List<EventDTO> getAllEventWithMostPopularBid(Event.Order order) {
         List<EventDTO> list = new ArrayList<>();
-        List<Event> allEvents = eventRepository.findAllByOrderByDateDesc();
+        List<Event> allEvents = eventRepository.findAll();
         for (Event event : allEvents) {
             EventDTO eventDTO = mapToEventDTO.apply(event);
             List<Long> idTerm = event.getTerms().stream()
                     .map(Term::getId)
                     .collect(Collectors.toList());
             if (idTerm.size() != 0) {
-                Long termId = termRepository.getMostPopularTermFromTerms(idTerm)[0];
-                if (termRepository.findById(termId).isPresent()) {
-                    Term mostPopularTerm = termRepository.getOne(termId);
-                    List<BidDTO> bidDTOList = mostPopularTerm.getVariants()
-                            .stream()
-                            .map(o -> BidDTO.builder()
-                                    .variant(o.getName())
-                                    .koef(bidRepository.getBestKoefByTermVarID(o.getId()))
-                                    .build())
-                            .collect(Collectors.toList());
-                    TermDTO termDTO = TermDTO.builder()
-                            .title(mostPopularTerm.getName())
-                            .bids(bidDTOList)
-                            .build();
-                    eventDTO.setTerm(termDTO);
-                }
+                eventDTO.setTerm(mostPopular(termRepository.getMostPopularTermFromTerms(idTerm)[0]));
             }
             list.add(eventDTO);
         }
+        return sortBy(list, order);
+    }
+
+    private List<EventDTO> sortBy(List<EventDTO> list, Event.Order order) {
+        switch (order) {
+            case date:
+                list.sort((Comparator.comparing(EventDTO::getDateStop)).reversed());
+            case popular:
+                list.sort((Comparator.comparingInt(EventDTO::getAmountOfBids)));
+        }
         return list;
+    }
+
+    private TermDTO mostPopular(Long termId) {
+        if (termRepository.findById(termId).isPresent()) {
+            Term mostPopularTerm = termRepository.getOne(termId);
+            List<BidDTO> bidDTOList = mostPopularTerm.getVariants()
+                    .stream()
+                    .map(o -> BidDTO.builder()
+                            .variant(o.getName())
+                            .koef(bidRepository.getBestKoefByTermVarID(o.getId()))
+                            .build())
+                    .collect(Collectors.toList());
+            return TermDTO.builder()
+                    .title(mostPopularTerm.getName())
+                    .bids(bidDTOList)
+                    .build();
+        }
+        return null;
     }
 
     Function<Event, EventDTO> mapToEventDTO = (event -> EventDTO.builder()
