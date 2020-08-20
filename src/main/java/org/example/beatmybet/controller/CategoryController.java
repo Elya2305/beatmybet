@@ -6,6 +6,7 @@ import org.example.beatmybet.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -18,18 +19,18 @@ public class CategoryController {
     @Autowired CategoryService categoryService;
 
     @GetMapping("/all")
-    public Set<CategoryDTO> getAllCategories(){
+    public List<CategoryDTO> getAllCategories(){
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/main")
-    public Set<CategoryDTO> getMainCategories() {
+    public List<CategoryDTO> getMainCategories() {
         return categoryService.getMainCategories();
 
     }
 
     @GetMapping("/subcategories/{id}")
-    public Set<CategoryDTO> getSubcategories(@PathVariable("id") Long id) {
+    public List<CategoryDTO> getSubcategories(@PathVariable("id") Long id) {
         return categoryService.getSubcategories(id);
 
     }

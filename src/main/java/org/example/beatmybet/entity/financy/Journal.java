@@ -1,33 +1,35 @@
 package org.example.beatmybet.entity.financy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString(of = {"id", "date", "typeOperation"})
-//@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "journal")
 public class Journal {
     @Id
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @CreationTimestamp
+    private LocalDateTime date;
 
-    @ManyToOne
+    @NonNull
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_type_operation")
     private TypeOperation typeOperation;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "journal")
-    private Set<Posting> postings;
+    @OneToMany(mappedBy = "journal", cascade = CascadeType.ALL)
+    private List<Posting> postings;
 }

@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -25,7 +26,7 @@ import java.util.Date;
 @JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 public class EventDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private long id;
+    private Long id;
 
     private String content;
 
@@ -35,13 +36,16 @@ public class EventDTO {
     private String superCategory;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate dateStop;
+    private LocalDateTime dateStop;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private LocalDate dataEnd;
+    private LocalDateTime dataEnd;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private int amountOfBids;
+    private Integer amountOfBids;
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    private TermDTO term;
 }
 

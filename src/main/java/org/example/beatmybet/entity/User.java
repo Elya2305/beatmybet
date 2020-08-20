@@ -5,18 +5,18 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @ToString(of = {"id", "date", "phone", "password"})
-//@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "user")
 public class User implements Serializable {
     @Id
@@ -24,8 +24,8 @@ public class User implements Serializable {
     private Long id;
 
     @Column(name = "dt")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @CreationTimestamp
+    private LocalDate date;
 
     private Integer phone;
 
@@ -35,7 +35,7 @@ public class User implements Serializable {
 //    @JsonBackReference
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    Set<Event> events;
+    List<Event> events;
 
     public User() {
     }

@@ -10,20 +10,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
-public class TermDTO {
+public class BidDTO {
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    private String title;
+    private Long idVar;
 
-    private List<BidDTO> bids;
+    private String variant; //!
+
+    private Double sum;
+
+    private Float koef; //!
+
 }

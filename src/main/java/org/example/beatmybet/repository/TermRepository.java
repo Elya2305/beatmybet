@@ -15,4 +15,12 @@ public interface TermRepository extends JpaRepository<Term, Long> {
                     "LIMIT 2",
     nativeQuery = true)
     List<Integer[]> getMostPopularTerm();
+
+    @Query(value = "SELECT id_term, COUNT(*) " +
+            "FROM `bid` " +
+            "WHERE id_term IN :idTerms " +
+            "GROUP BY id_term " +
+            "ORDER BY COUNT(*) DESC " +
+            "LIMIT 1", nativeQuery = true)
+    Long[] getMostPopularTermFromTerms(List<Long> idTerms);
 }

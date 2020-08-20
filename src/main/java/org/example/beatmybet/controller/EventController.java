@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -19,8 +20,8 @@ public class EventController {
     EventService eventService;
 
     @GetMapping("/all")
-    public Set<EventDTO> getAllEvents() {
-        return eventService.getAllEvents();
+    public List<EventDTO> getAllEvents() {
+        return eventService.getAllEventWithMostPopularBid();
     }
 
     @GetMapping("/{id}")

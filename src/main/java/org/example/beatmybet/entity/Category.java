@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,10 +45,10 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Setter
-    private Set<Category> subCategories;
+    private List<Category> subCategories;
 
     @JsonIgnore
-    public Set<Category> getSubCategories() {
+    public List<Category> getSubCategories() {
         return subCategories;
     }
 }

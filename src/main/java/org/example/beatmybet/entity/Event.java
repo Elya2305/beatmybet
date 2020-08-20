@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class Event {
 
     @Column(name = "dt")
     @CreationTimestamp
-    private LocalDate date;
+    private LocalDateTime date;
 
 //    @NonNull
 //    @JsonManagedReference
@@ -44,13 +46,14 @@ public class Event {
 
     @NonNull
     @Column(name = "data_stop")
-    private LocalDate dateStop;
+    private LocalDateTime dateStop;
 
     @NonNull
     @Column(name = "data_end")
-    private LocalDate dateEnd;
+    private LocalDateTime dateEnd;
 
     @JsonBackReference
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", cascade = CascadeType.ALL)
     List<Term> terms;
 

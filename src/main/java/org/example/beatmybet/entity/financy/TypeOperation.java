@@ -11,9 +11,6 @@ import java.util.Set;
 @Entity
 @Data
 @ToString(of = {"id", "nameType"})
-//@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @Table(name = "type_operation")
 public class TypeOperation {
     @Id
@@ -21,10 +18,19 @@ public class TypeOperation {
     private Long id;
 
     @Column(name = "name_type")
-    private String nameType;
+    @Enumerated(EnumType.STRING)
+    private Type nameType;
 
     @JsonIgnore
     @OneToMany(mappedBy = "typeOperation")
-    private Set<Journal> journals;
+    private List<Journal> journals;
+
+    public enum Type{
+        REPLENISHMENT,
+        BID_BALANCE,
+        DEAL_BALANCE,
+        DEAL_PAYMENT,
+        COMMISSION
+    }
 }
 
