@@ -20,8 +20,14 @@ public class EventController {
     EventService eventService;
 
     @GetMapping("/all/{order}")
-    public List<EventDTO> getAllEvents(@PathVariable String order) {
-        return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order));
+    public List<EventDTO> getAllEvents(@PathVariable String order, @RequestParam int page) {
+        return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page);
+    }
+
+    @GetMapping
+    public List<Integer> sub() {
+
+        return List.of(1,2,3,4).subList(0,2);
     }
 
 

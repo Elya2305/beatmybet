@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
 
+    private static final int SIZE_OF_PAGE = 2;
+
     @Autowired
     EventRepository eventRepository;
 
@@ -50,7 +52,7 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException("event", id)));
     }
 
-    public List<EventDTO> getAllEventWithMostPopularBid(Event.Order order) {
+    public List<EventDTO> getAllEventWithMostPopularBid(Event.Order order, int page) {
         List<EventDTO> list = new ArrayList<>();
         List<Event> allEvents = eventRepository.findAll();
         for (Event event : allEvents) {
@@ -63,17 +65,19 @@ public class EventService {
             }
             list.add(eventDTO);
         }
-        return sortBy(list, order);
+        return sortBy(list, order, page);
     }
 
-    private List<EventDTO> sortBy(List<EventDTO> list, Event.Order order) {
+    private List<EventDTO> sortBy(List<EventDTO> list, Event.Order order, int page) {
         switch (order) {
             case date:
                 list.sort((Comparator.comparing(EventDTO::getDateStop)).reversed());
             case popular:
                 list.sort((Comparator.comparingInt(EventDTO::getAmountOfBids)));
         }
-        return list;
+        int first = SIZE_OF_PAGE * (page - 1);
+        int last = Math.min(SIZE_OF_PAGE * (page - 1) + 2, list.size());
+        return first >= list.size() ? List.of() : list.subList(first, last);
     }
 
     private TermDTO mostPopular(Long termId) {

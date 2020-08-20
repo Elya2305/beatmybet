@@ -1,6 +1,8 @@
 package org.example.beatmybet.repository;
 
 import org.example.beatmybet.entity.Event;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Integer countAmountOfBids(@Param("id") Long id);
 
     List<Event> findAllByOrderByDateDesc();
+
+    Page<Event> findAll(Pageable pageable);
 }
