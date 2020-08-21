@@ -1,7 +1,9 @@
 package org.example.beatmybet.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.example.beatmybet.entity.financy.FinanceType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,8 +11,9 @@ import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "bid")
-public class Bid implements Serializable {
+public class Bid implements Serializable, GlobalFinanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +34,8 @@ public class Bid implements Serializable {
     @JoinColumn(name = "id_var")
     private TermVariant termVariant;
 
-    public Bid() {
+    @Override
+    public FinanceType getType() {
+        return FinanceType.BID;
     }
 }

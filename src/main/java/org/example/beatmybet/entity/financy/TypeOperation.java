@@ -21,6 +21,12 @@ public class TypeOperation {
     @Enumerated(EnumType.STRING)
     private Type nameType;
 
+    @Enumerated(EnumType.STRING)
+    private FinanceType plus;
+
+    @Enumerated(EnumType.STRING)
+    private FinanceType minus;
+
     @JsonIgnore
     @OneToMany(mappedBy = "typeOperation")
     private List<Journal> journals;
@@ -28,6 +34,7 @@ public class TypeOperation {
     public enum Type{
         REPLENISHMENT,
         BID_BALANCE,
+        WITHDRAWING,
         DEAL_BALANCE,
         DEAL_PAYMENT,
         COMMISSION

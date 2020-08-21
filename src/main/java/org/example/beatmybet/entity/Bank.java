@@ -6,12 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "finance_type")
-public class FinanceType {
+public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 }

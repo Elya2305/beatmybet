@@ -58,24 +58,19 @@ public class TermService {
         return names.stream().map(o -> new TermVariant(term, o)).collect(Collectors.toList());
     }
 
-    public boolean addBid(BidDTO bidDTO, long idTerm) { //TODO user principal
+    public boolean addBid(BidDTO bidDTO) { //TODO user principal
         User userEntity = userRepository.findById(1L).get();
 
-        Optional<Term> term = termRepository.findById(idTerm);
-        if (term.isPresent()) {
-            Term termEntity = termRepository.getOne(idTerm);
-            Optional<TermVariant> termVariant = termVariantRepository.findById(bidDTO.getIdVar());
-            if (termVariant.isPresent() && termEntity.getVariants().contains(termVariant.get())) {
-                Bid bid = new Bid();
-                bid.setTerm(termEntity);
-                bid.setTermVariant(termVariant.get());
-                bid.setKoef(bidDTO.getKoef());
-
-                financeService.post(bid, userEntity, bidDTO.getSum(), TypeOperation.Type.BID_BALANCE, true);
-            }
+        Optional<TermVariant> termVarEntity = termVariantRepository.findById(bidDTO.getIdVar());
+        if (termVarEntity.isPresent()) {
+            TermVariant termVariant = termVariantRepository.getOne(bidDTO.getIdVar());
+            Bid bid = new Bid();
+            bid.setTerm(termVariant.getTerm());
+            bid.setTermVariant(termVariant);
+            bid.setKoef(bidDTO.getKoef());
+            financeService.post(bid, userEntity, bidDTO.getSum(), TypeOperation.Type.BID_BALANCE);
+            return true;
         }
-
-
         return false;
     }
 }

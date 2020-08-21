@@ -16,4 +16,11 @@ public class NotFoundAdvice {
         e.printStackTrace();
         return new ResponseStatusDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(NegativeSumException.class)
+    public ResponseStatusDto negativeSum(Exception e) {
+        e.printStackTrace();
+        return new ResponseStatusDto(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage());
+    }
 }

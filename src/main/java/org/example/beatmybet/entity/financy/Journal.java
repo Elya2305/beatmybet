@@ -19,6 +19,7 @@ import java.util.Set;
 @Table(name = "journal")
 public class Journal {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreationTimestamp

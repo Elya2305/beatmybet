@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import lombok.ToString;
+import org.example.beatmybet.entity.financy.FinanceType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ import java.util.Set;
 @Data
 @ToString(of = {"id", "date", "phone", "password"})
 @Table(name = "user")
-public class User implements Serializable {
+public class User implements Serializable, GlobalFinanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,5 +41,9 @@ public class User implements Serializable {
     public User() {
     }
 
+    @Override
+    public FinanceType getType() {
+        return FinanceType.USER;
+    }
 
 }

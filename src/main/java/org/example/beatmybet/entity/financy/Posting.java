@@ -2,6 +2,7 @@ package org.example.beatmybet.entity.financy;
 
 import lombok.Data;
 import org.hibernate.annotations.Any;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Posting {
             metaColumn = @Column(name = "type_entity")
     )
     @JoinColumn(name = "id_entity")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Serializable entity;
 
     @ManyToOne

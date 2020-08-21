@@ -21,11 +21,10 @@ public class TermController {
                 "term '" + termDTO.getTitle() + "' was added");
     }
 
-    @PostMapping("/{idTerm}/add-bid")
-    public ResponseStatusDto newBid(@PathVariable long idTerm, @RequestBody BidDTO bidDTO) {
-        termService.addBid(bidDTO, idTerm);
-
-        return null;
+    @PostMapping("/add-bid")
+    public ResponseStatusDto newBid(@RequestBody BidDTO bidDTO) {
+        termService.addBid(bidDTO);
+        return new ResponseStatusDto(HttpStatus.OK.value(),
+                "new bid was sent by user 1 on variant " + bidDTO.getIdVar());
     }
-
 }
