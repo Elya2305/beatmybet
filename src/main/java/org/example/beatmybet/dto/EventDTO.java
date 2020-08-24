@@ -37,11 +37,11 @@ public class EventDTO {
     private String superCategory;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDateTime dateStop;
+    private LocalDate dateStop;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private LocalDateTime dataEnd;
+    private LocalDate dataEnd;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer amountOfBids;

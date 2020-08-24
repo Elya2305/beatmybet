@@ -51,8 +51,8 @@ public class EventService {
         event.setName(eventDto.getContent());
         event.setCategory(categoryRepository.findByName(eventDto.getCategory()));
         event.setUser(userRepository.findById(1L).get());
-        event.setDateEnd(eventDto.getDataEnd());
-        event.setDateStop(eventDto.getDateStop());
+        event.setDateEnd(eventDto.getDataEnd().atStartOfDay());
+        event.setDateStop(eventDto.getDateStop().atStartOfDay());
 
         eventRepository.save(event);
     }
@@ -160,8 +160,8 @@ public class EventService {
             .id(event.getId())
             .category(event.getCategory().getName())
             .superCategory(event.getCategory().getCategory().getName())
-            .dataEnd(event.getDateEnd())
-            .dateStop(event.getDateStop())
+            .dataEnd(event.getDateEnd().toLocalDate())
+            .dateStop(event.getDateStop().toLocalDate())
             .content(event.getName())
             .amountOfBids(eventRepository.countAmountOfBids(event.getId()))
             .build());

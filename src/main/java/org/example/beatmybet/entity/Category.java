@@ -20,7 +20,6 @@ import java.util.Set;
 @Entity
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "event_cat")
 public class Category {
