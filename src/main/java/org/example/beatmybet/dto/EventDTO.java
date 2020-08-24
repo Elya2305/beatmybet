@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -45,7 +46,9 @@ public class EventDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer amountOfBids;
 
-    @JsonInclude(JsonInclude.Include.ALWAYS)
+//    @JsonInclude(JsonInclude.Include.ALWAYS)
     private TermDTO term;
+
+    private List<TermDTO> allTerms;
 }
 

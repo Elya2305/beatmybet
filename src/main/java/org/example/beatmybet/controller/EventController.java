@@ -24,22 +24,21 @@ public class EventController {
         return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page);
     }
 
-    @GetMapping
-    public List<Integer> sub() {
-
-        return List.of(1,2,3,4).subList(0,2);
-    }
-
-
-    @GetMapping("/{id}")
-    public EventDTO getEventById(@PathVariable("id") Long id) {
-        return eventService.getById(id);
-    }
+//    @GetMapping("/{id}")
+//    public EventDTO getEventById(@PathVariable("id") Long id) {
+//        return eventService.getById(id);
+//    }
 
     @PostMapping("/add") //@Principal user
     public ResponseStatusDto addEvent(EventDTO eventDto) {
         eventService.addEvent(eventDto);
         return new ResponseStatusDto(HttpStatus.OK.value(),
                 "new event " + eventDto.getContent() + " added");
+    }
+
+
+    @GetMapping("/{id}")
+    public EventDTO termsByEvent(@PathVariable long id) {
+        return eventService.termsByEvent(id);
     }
 }

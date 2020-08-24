@@ -33,7 +33,6 @@ public class User implements Serializable, GlobalFinanceEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-//    @JsonBackReference
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Event> events;

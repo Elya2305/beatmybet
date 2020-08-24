@@ -24,10 +24,12 @@ public class BidDTO {
 
     private Long idVar;
 
-    private String variant; //!
+    private String variant; //reduntant
 
     private Double sum;
 
-    private Float koef; //!
+    private Double koef;
 
 }
+
+// sum - koef pair

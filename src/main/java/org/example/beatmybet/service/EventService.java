@@ -3,8 +3,12 @@ package org.example.beatmybet.service;
 import org.example.beatmybet.dto.BidDTO;
 import org.example.beatmybet.dto.EventDTO;
 import org.example.beatmybet.dto.TermDTO;
+import org.example.beatmybet.dto.TermVariantDTO;
+import org.example.beatmybet.entity.Bid;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.entity.Term;
+import org.example.beatmybet.entity.TermVariant;
+import org.example.beatmybet.entity.financy.Posting;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,12 @@ public class EventService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PostingRepository postingRepository;
+
+    @Autowired
+    TermVariantRepository termVariantRepository;
 
     //add user
     public void addEvent(EventDTO eventDto) {
@@ -96,6 +106,54 @@ public class EventService {
                     .build();
         }
         return null;
+    }
+
+    public EventDTO termsByEvent(long id) {
+        Optional<Event> eventEntity = eventRepository.findById(id);
+        if (eventEntity.isPresent()) {
+            Event event = eventRepository.getOne(id);
+            EventDTO eventDTO = mapToEventDTO.apply(event);
+            List<TermDTO> termDTOS = event.getTerms().stream()
+                    .map(term -> TermDTO.builder()
+                            .title(term.getName())
+                            .variants(generateTermVariants(term))
+                            .build())
+                    .collect(Collectors.toList());
+            eventDTO.setAllTerms(termDTOS);
+            return eventDTO;
+        } else {
+            throw new NotFoundException("event", id);
+        }
+    }
+
+    private List<TermVariantDTO> generateTermVariants(Term term) {
+        return term.getVariants().stream()
+                .map(variant -> TermVariantDTO.builder()
+                        .termVarTitle(termVariantRepository.findOpposite(term.getId(), variant.getId()).getName())
+                        .bids(generateBids(variant))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<BidDTO> generateBids(TermVariant termVar) {
+        List<Bid> bids = bidRepository.findByTermVariant(termVar);
+        List<BidDTO> bidDTOList = new ArrayList<>();
+        for (Bid bid : bids) {
+            Double sum = postingRepository.sumByBid(bid.getId());
+            if (sum != null) {
+                BidDTO bidDTO = BidDTO.builder()
+                        .id(bid.getId())
+                        .koef((double) Math.round(oppositeKoef(bid.getKoef()) * 1000d) / 1000d)
+                        .sum((double) Math.round((sum * bid.getKoef() - sum) * 1000d) / 1000d)
+                        .build();
+                bidDTOList.add(bidDTO);
+            }
+        }
+        return bidDTOList;
+    }
+
+    private double oppositeKoef(double k) {
+        return k / (k - 1);
     }
 
     Function<Event, EventDTO> mapToEventDTO = (event -> EventDTO.builder()

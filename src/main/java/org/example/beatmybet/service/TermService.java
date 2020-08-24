@@ -33,22 +33,15 @@ public class TermService {
     @Autowired
     FinanceService financeService;
 
-    public void query() {
-        List<Integer[]> mostPopularTerm = termRepository.getMostPopularTerm();
-        for (Integer[] o : mostPopularTerm) {
-            System.out.println(Arrays.toString(o));
-        }
-    }
-
     public boolean create(TermDTO termDTO, long idEvent) {
         Optional<Event> event = eventRepository.findById(idEvent);
         if (event.isPresent()) {
-//            Term term = new Term();
-//            term.setEvent(event.get());
-//            term.setName(termDTO.getName());
-//            term.setUser(userRepository.findById(1L).get()); // TODO getPrincipal()
+            Term term = new Term();
+            term.setEvent(event.get());
+            term.setName(termDTO.getTitle());
+            term.setUser(userRepository.findById(1L).get()); // TODO getPrincipal()
 //            term.setVariants(variantsByName(termDTO.getVariants(), term));
-//            termRepository.save(term);
+            termRepository.save(term);
             return true;
         }
         return false;
@@ -73,4 +66,5 @@ public class TermService {
         }
         return false;
     }
+
 }

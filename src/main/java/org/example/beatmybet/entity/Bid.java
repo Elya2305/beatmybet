@@ -28,7 +28,7 @@ public class Bid implements Serializable, GlobalFinanceEntity {
     private Date date;
 
     @Column(name = "koef")
-    private Float koef;
+    private Double koef;
 
     @ManyToOne
     @JoinColumn(name = "id_var")

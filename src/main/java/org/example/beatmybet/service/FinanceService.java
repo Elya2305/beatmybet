@@ -1,18 +1,19 @@
 package org.example.beatmybet.service;
 
 import org.example.beatmybet.entity.GlobalFinanceEntity;
-import org.example.beatmybet.entity.financy.*;
+import org.example.beatmybet.entity.financy.Journal;
+import org.example.beatmybet.entity.financy.Posting;
+import org.example.beatmybet.entity.financy.TypeOperation;
 import org.example.beatmybet.exception.NegativeSumException;
 import org.example.beatmybet.repository.JournalRepository;
 import org.example.beatmybet.repository.PostingRepository;
 import org.example.beatmybet.repository.TypeOperationRepository;
+import org.example.beatmybet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class FinanceService {
@@ -22,6 +23,9 @@ public class FinanceService {
 
     @Autowired
     JournalRepository journalRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     TypeOperationRepository typeOperationRepository;
@@ -45,11 +49,12 @@ public class FinanceService {
         return true;
     }
 
-    public void checkSum(double sum) {
+    public void checkSum(double sum) { // TODO principal
         if (sum <= 0) {
             throw new NegativeSumException(sum);
         }
+        if (userRepository.getBalance(1L) < 0) {
+            throw new NegativeSumException(1L);
+        }
     }
-
-
 }

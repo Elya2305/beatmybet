@@ -5,4 +5,6 @@ public class NotFoundException extends RuntimeException {
         super("Could not find " + entity + " with id " + id);
     }
 
+    public NotFoundException() {
+    }
 }
