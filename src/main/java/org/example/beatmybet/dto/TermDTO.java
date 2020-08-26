@@ -1,6 +1,5 @@
 package org.example.beatmybet.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -18,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 public class TermDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
@@ -27,5 +25,5 @@ public class TermDTO {
 
     private List<TermVariantDTO> variants;
 
-    private List<BidDTO> bids;
+//    private List<BidDTO> bids;
 }

@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 public class BidDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private Long id; // TODO delete
 
     private Long idVar;
 
-    private String variant; //reduntant
+    private String variant; //TODO redundant
 
     private Double sum;
 

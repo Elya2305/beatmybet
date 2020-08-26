@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 public class TermVariantDTO {
 
     private String termVarTitle;

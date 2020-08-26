@@ -1,6 +1,5 @@
 package org.example.beatmybet.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -11,12 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -24,8 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
-public class EventDTO {
+public class BaseEventDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
@@ -46,9 +39,4 @@ public class EventDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer amountOfBids;
 
-//    @JsonInclude(JsonInclude.Include.ALWAYS)
-    private TermDTO term;
-
-    private List<TermDTO> allTerms;
 }
-

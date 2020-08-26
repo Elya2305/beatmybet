@@ -1,14 +1,10 @@
 package org.example.beatmybet.service;
 
-import org.example.beatmybet.dto.BidDTO;
-import org.example.beatmybet.dto.EventDTO;
-import org.example.beatmybet.dto.TermDTO;
-import org.example.beatmybet.dto.TermVariantDTO;
+import org.example.beatmybet.dto.*;
 import org.example.beatmybet.entity.Bid;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.entity.Term;
 import org.example.beatmybet.entity.TermVariant;
-import org.example.beatmybet.entity.financy.Posting;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +40,8 @@ public class EventService {
     @Autowired
     TermVariantRepository termVariantRepository;
 
-    //add user
-    public void addEvent(EventDTO eventDto) {
+    //TODO add user
+    public void addEvent(MainEventDTO eventDto) {
         Event event = new Event();
 
         event.setName(eventDto.getContent());
@@ -57,70 +53,60 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public EventDTO getById(Long id) {
-        return mapToEventDTO.apply(eventRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("event", id)));
+    public List<? extends BaseEventDTO> getAllEventWithMostPopularBid(Event.Order order, int page) {
+        return sortBy(eventRepository.findAll()
+                .stream()
+                .map(this::getHomeEventDto)
+                .collect(Collectors.toList()), order, page);
     }
 
-    public List<EventDTO> getAllEventWithMostPopularBid(Event.Order order, int page) {
-        List<EventDTO> list = new ArrayList<>();
-        List<Event> allEvents = eventRepository.findAll();
-        for (Event event : allEvents) {
-            EventDTO eventDTO = mapToEventDTO.apply(event);
-            List<Long> idTerm = event.getTerms().stream()
-                    .map(Term::getId)
-                    .collect(Collectors.toList());
-            if (idTerm.size() != 0) {
-                eventDTO.setTerm(mostPopular(termRepository.getMostPopularTermFromTerms(idTerm)[0]));
-            }
-            list.add(eventDTO);
+    public HomeEventDTO getHomeEventDto(Event event) {
+        HomeEventDTO eventDTO = new HomeEventDTO();
+        setBasicsAttributes(event, eventDTO);
+        List<Long> idTerms = event.getTerms().stream()
+                .map(Term::getId)
+                .collect(Collectors.toList());
+        if (idTerms.size() != 0) {
+            Long termId = termRepository.getMostPopularTermFromTerms(idTerms)[0];
+            Term term = termRepository.findById(termId).orElseThrow(() -> new NotFoundException("term", termId));
+            eventDTO.setTitleTerm(term.getName());
+            eventDTO.setBids(term.getVariants()
+                    .stream()
+                    .map(o -> HomeBidDTO.builder()
+                            .variant(o.getName())
+                            .koef(bidRepository.getBestKoefByTermVarID(o.getId()))
+                            .build())
+                    .collect(Collectors.toList()));
         }
-        return sortBy(list, order, page);
+        return eventDTO;
     }
 
-    private List<EventDTO> sortBy(List<EventDTO> list, Event.Order order, int page) {
+    private List<? extends BaseEventDTO> sortBy(List<? extends BaseEventDTO> list, Event.Order order, int page) {
         switch (order) {
             case date:
-                list.sort((Comparator.comparing(EventDTO::getDateStop)).reversed());
+                list.sort((Comparator.comparing(BaseEventDTO::getDateStop)).reversed());
             case popular:
-                list.sort((Comparator.comparingInt(EventDTO::getAmountOfBids)));
+                list.sort((Comparator.comparingInt(BaseEventDTO::getAmountOfBids)));
         }
         int first = SIZE_OF_PAGE * (page - 1);
         int last = Math.min(SIZE_OF_PAGE * (page - 1) + 2, list.size());
         return first >= list.size() ? List.of() : list.subList(first, last);
     }
 
-    private TermDTO mostPopular(Long termId) {
-        if (termRepository.findById(termId).isPresent()) {
-            Term mostPopularTerm = termRepository.getOne(termId);
-            List<BidDTO> bidDTOList = mostPopularTerm.getVariants()
-                    .stream()
-                    .map(o -> BidDTO.builder()
-                            .variant(o.getName())
-                            .koef(bidRepository.getBestKoefByTermVarID(o.getId()))
-                            .build())
-                    .collect(Collectors.toList());
-            return TermDTO.builder()
-                    .title(mostPopularTerm.getName())
-                    .bids(bidDTOList)
-                    .build();
-        }
-        return null;
-    }
-
-    public EventDTO termsByEvent(long id) {
+    public MainEventDTO termsByEvent(long id) {
         Optional<Event> eventEntity = eventRepository.findById(id);
         if (eventEntity.isPresent()) {
             Event event = eventRepository.getOne(id);
-            EventDTO eventDTO = mapToEventDTO.apply(event);
+            MainEventDTO mainEventDTO = new MainEventDTO();
+            setBasicsAttributes(event, mainEventDTO);
             List<TermDTO> termDTOS = event.getTerms().stream()
                     .map(term -> TermDTO.builder()
                             .title(term.getName())
                             .variants(generateTermVariants(term))
                             .build())
                     .collect(Collectors.toList());
-            eventDTO.setAllTerms(termDTOS);
-            return eventDTO;
+            mainEventDTO.setAllTerms(termDTOS);
+            return mainEventDTO;
         } else {
             throw new NotFoundException("event", id);
         }
@@ -156,13 +142,12 @@ public class EventService {
         return k / (k - 1);
     }
 
-    Function<Event, EventDTO> mapToEventDTO = (event -> EventDTO.builder()
-            .id(event.getId())
-            .category(event.getCategory().getName())
-            .superCategory(event.getCategory().getCategory().getName())
-            .dataEnd(event.getDateEnd().toLocalDate())
-            .dateStop(event.getDateStop().toLocalDate())
-            .content(event.getName())
-            .amountOfBids(eventRepository.countAmountOfBids(event.getId()))
-            .build());
+    private void setBasicsAttributes(Event event, BaseEventDTO baseEventDTO) {
+        baseEventDTO.setId(event.getId());
+        baseEventDTO.setCategory(event.getCategory().getName());
+        baseEventDTO.setSuperCategory(event.getCategory().getCategory().getName());
+        baseEventDTO.setDateStop(event.getDateStop().toLocalDate());
+        baseEventDTO.setContent(event.getName());
+        baseEventDTO.setAmountOfBids(eventRepository.countAmountOfBids(event.getId()));
+    }
 }

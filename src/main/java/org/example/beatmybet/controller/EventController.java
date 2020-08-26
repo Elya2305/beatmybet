@@ -1,16 +1,16 @@
 package org.example.beatmybet.controller;
 
-import org.example.beatmybet.dto.EventDTO;
+import org.example.beatmybet.dto.BaseEventDTO;
+import org.example.beatmybet.dto.MainEventDTO;
+import org.example.beatmybet.dto.HomeEventDTO;
 import org.example.beatmybet.dto.ResponseStatusDto;
 import org.example.beatmybet.entity.Event;
-import org.example.beatmybet.repository.EventRepository;
 import org.example.beatmybet.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/event")
@@ -20,25 +20,19 @@ public class EventController {
     EventService eventService;
 
     @GetMapping("/all/{order}")
-    public List<EventDTO> getAllEvents(@PathVariable String order, @RequestParam int page) {
+    public List<? extends BaseEventDTO> getAllEvents(@PathVariable String order, @RequestParam int page) {
         return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page);
     }
 
-//    @GetMapping("/{id}")
-//    public EventDTO getEventById(@PathVariable("id") Long id) {
-//        return eventService.getById(id);
-//    }
-
     @PostMapping("/add") //@Principal user
-    public ResponseStatusDto addEvent(EventDTO eventDto) {
+    public ResponseStatusDto addEvent(MainEventDTO eventDto) {
         eventService.addEvent(eventDto);
         return new ResponseStatusDto(HttpStatus.OK.value(),
                 "new event " + eventDto.getContent() + " added");
     }
 
-
     @GetMapping("/{id}")
-    public EventDTO termsByEvent(@PathVariable long id) {
+    public MainEventDTO termsByEvent(@PathVariable long id) {
         return eventService.termsByEvent(id);
     }
 }
