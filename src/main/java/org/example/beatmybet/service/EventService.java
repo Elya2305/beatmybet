@@ -19,26 +19,24 @@ public class EventService {
 
     private static final int SIZE_OF_PAGE = 2;
 
-    @Autowired
-    EventRepository eventRepository;
+    private TermService termService;
+
+    private BidService bidService;
+
+    private EventRepository eventRepository;
+
+    private CategoryRepository categoryRepository;
+
+    private UserRepository userRepository;
 
     @Autowired
-    CategoryRepository categoryRepository;
-
-    @Autowired
-    TermRepository termRepository;
-
-    @Autowired
-    BidRepository bidRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostingRepository postingRepository;
-
-    @Autowired
-    TermVariantRepository termVariantRepository;
+    public EventService(TermService termService, BidService bidService, EventRepository eventRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
+        this.termService = termService;
+        this.bidService = bidService;
+        this.eventRepository = eventRepository;
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+    }
 
     //TODO add user
     public void addEvent(MainEventDTO eventDto) {
@@ -63,21 +61,11 @@ public class EventService {
     public HomeEventDTO getHomeEventDto(Event event) {
         HomeEventDTO eventDTO = new HomeEventDTO();
         setBasicsAttributes(event, eventDTO);
-        List<Long> idTerms = event.getTerms().stream()
-                .map(Term::getId)
-                .collect(Collectors.toList());
-        if (idTerms.size() != 0) {
-            Long termId = termRepository.getMostPopularTermFromTerms(idTerms)[0];
-            Term term = termRepository.findById(termId).orElseThrow(() -> new NotFoundException("term", termId));
-            eventDTO.setTitleTerm(term.getName());
-            eventDTO.setBids(term.getVariants()
-                    .stream()
-                    .map(o -> HomeBidDTO.builder()
-                            .variant(o.getName())
-                            .koef(bidRepository.getBestKoefByTermVarID(o.getId()))
-                            .build())
-                    .collect(Collectors.toList()));
-        }
+
+        Term popularTerm = termService.mostPopularTermByEvent(event);
+
+        eventDTO.setTitleTerm(popularTerm.getName());
+        eventDTO.setBids(bidService.homeBidDTOsByTerm(popularTerm));
         return eventDTO;
     }
 
@@ -99,48 +87,13 @@ public class EventService {
             Event event = eventRepository.getOne(id);
             MainEventDTO mainEventDTO = new MainEventDTO();
             setBasicsAttributes(event, mainEventDTO);
-            List<TermDTO> termDTOS = event.getTerms().stream()
-                    .map(term -> TermDTO.builder()
-                            .title(term.getName())
-                            .variants(generateTermVariants(term))
-                            .build())
-                    .collect(Collectors.toList());
-            mainEventDTO.setAllTerms(termDTOS);
+            mainEventDTO.setAllTerms(termService.allTermsByEvent(event));
             return mainEventDTO;
         } else {
             throw new NotFoundException("event", id);
         }
     }
 
-    private List<TermVariantDTO> generateTermVariants(Term term) {
-        return term.getVariants().stream()
-                .map(variant -> TermVariantDTO.builder()
-                        .termVarTitle(termVariantRepository.findOpposite(term.getId(), variant.getId()).getName())
-                        .bids(generateBids(variant))
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    private List<BidDTO> generateBids(TermVariant termVar) {
-        List<Bid> bids = bidRepository.findByTermVariant(termVar);
-        List<BidDTO> bidDTOList = new ArrayList<>();
-        for (Bid bid : bids) {
-            Double sum = postingRepository.sumByBid(bid.getId());
-            if (sum != null) {
-                BidDTO bidDTO = BidDTO.builder()
-                        .id(bid.getId())
-                        .koef((double) Math.round(oppositeKoef(bid.getKoef()) * 1000d) / 1000d)
-                        .sum((double) Math.round((sum * bid.getKoef() - sum) * 1000d) / 1000d)
-                        .build();
-                bidDTOList.add(bidDTO);
-            }
-        }
-        return bidDTOList;
-    }
-
-    private double oppositeKoef(double k) {
-        return k / (k - 1);
-    }
 
     private void setBasicsAttributes(Event event, BaseEventDTO baseEventDTO) {
         baseEventDTO.setId(event.getId());

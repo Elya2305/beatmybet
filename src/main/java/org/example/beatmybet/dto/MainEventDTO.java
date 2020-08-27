@@ -17,7 +17,6 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-//@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude()

@@ -26,8 +26,8 @@ public class TermVariant {
     @JoinColumn(name = "id_term")
     private Term term;
 
-    @NonNull
     @Column(name = "name_var")
+    @NonNull
     private String name;
 
 }

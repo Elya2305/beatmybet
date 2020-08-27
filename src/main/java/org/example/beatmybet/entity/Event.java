@@ -15,11 +15,13 @@ import java.util.List;
 @Entity
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "events")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Long id;
 
     @JsonManagedReference
@@ -30,12 +32,15 @@ public class Event {
 
     @Column(name = "dt")
     @CreationTimestamp
+    @NonNull
     private LocalDateTime date;
 
 //    @NonNull
 //    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_user")
+    @NonNull
+
     private User user;
 
     @NonNull

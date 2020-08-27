@@ -16,8 +16,4 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
 
 //    List<Posting> getAllByEntity(Serializable entity);
 
-    @Query(value = "SELECT summ " +
-            "FROM `posting` " +
-            "WHERE id_entity =:idEntity AND type_entity = 'BID'", nativeQuery = true)
-    Double sumByBid(long idEntity);
 }

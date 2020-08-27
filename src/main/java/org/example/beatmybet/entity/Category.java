@@ -50,4 +50,5 @@ public class Category {
     public List<Category> getSubCategories() {
         return subCategories;
     }
+
 }

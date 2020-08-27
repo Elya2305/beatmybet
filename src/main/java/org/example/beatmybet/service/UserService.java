@@ -11,14 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired UserRepository userRepository;
-    @Autowired PostingRepository postingRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PostingRepository postingRepository;
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("user", id));
     }
 
-    public BalanceDTO getBalance(User user){
+    public BalanceDTO getBalance(User user) {
         BalanceDTO balance = BalanceDTO.builder().balance(
                 postingRepository.getBalance(user)
         ).amountOfBids(null).build();

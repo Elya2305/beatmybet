@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -17,10 +16,13 @@ import java.util.List;
 
 @Entity
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "term")
 public class Term {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Long id;
 
     @JsonManagedReference
@@ -38,8 +40,10 @@ public class Term {
     private LocalDate date;
 
     @Column(name = "name_term")
+    @NonNull
     private String name;
 
+    @NonNull
     @ToString.Exclude
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "term", cascade = CascadeType.ALL)

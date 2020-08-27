@@ -24,6 +24,4 @@ public class TermDTO {
     private String title;
 
     private List<TermVariantDTO> variants;
-
-//    private List<BidDTO> bids;
 }
