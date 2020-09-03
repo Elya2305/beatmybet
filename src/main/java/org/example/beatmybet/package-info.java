@@ -11,5 +11,3 @@ import org.example.beatmybet.entity.Bid;
 import org.example.beatmybet.entity.User;
 import org.hibernate.annotations.AnyMetaDef;
 import org.hibernate.annotations.MetaValue;
-
-//for polimorphic relations in db :|

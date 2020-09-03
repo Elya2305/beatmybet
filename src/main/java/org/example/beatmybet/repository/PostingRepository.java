@@ -14,6 +14,4 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     @Query("select sum(p.summ) from Posting p where p.entity=:user")
     double getBalance(@Param(("user")) User user);
 
-//    List<Posting> getAllByEntity(Serializable entity);
-
 }

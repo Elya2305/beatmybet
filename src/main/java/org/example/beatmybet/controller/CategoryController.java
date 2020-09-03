@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
-
-import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/category")
 @CrossOrigin(origins = "*")
 public class CategoryController {
 
-    @Autowired CategoryService categoryService;
+    @Autowired
+    CategoryService categoryService;
 
     @GetMapping("/all")
     public List<CategoryDTO> getAllCategories(){

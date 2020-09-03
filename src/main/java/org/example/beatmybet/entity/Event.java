@@ -35,12 +35,9 @@ public class Event {
     @NonNull
     private LocalDateTime date;
 
-//    @NonNull
-//    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_user")
     @NonNull
-
     private User user;
 
     @NonNull

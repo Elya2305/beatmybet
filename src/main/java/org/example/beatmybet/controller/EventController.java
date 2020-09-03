@@ -2,7 +2,6 @@ package org.example.beatmybet.controller;
 
 import org.example.beatmybet.dto.BaseEventDTO;
 import org.example.beatmybet.dto.MainEventDTO;
-import org.example.beatmybet.dto.HomeEventDTO;
 import org.example.beatmybet.dto.ResponseStatusDto;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.service.EventService;

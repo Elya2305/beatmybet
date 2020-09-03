@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class) //fullName -> full_name
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "event_cat")

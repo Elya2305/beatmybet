@@ -1,8 +1,7 @@
 package org.example.beatmybet.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
 import org.example.beatmybet.entity.financy.FinanceType;
@@ -10,10 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -26,7 +23,7 @@ public class User implements Serializable, GlobalFinanceEntity {
 
     @Column(name = "dt")
     @CreationTimestamp
-    private LocalDate date;
+    private LocalDateTime date;
 
     private Integer phone;
 
