@@ -3,7 +3,10 @@ package org.example.beatmybet.service.impl;
 import org.example.beatmybet.dto.BidDTO;
 import org.example.beatmybet.dto.TermDTO;
 import org.example.beatmybet.dto.TermVariantDTO;
-import org.example.beatmybet.entity.*;
+import org.example.beatmybet.entity.Bid;
+import org.example.beatmybet.entity.Event;
+import org.example.beatmybet.entity.Term;
+import org.example.beatmybet.entity.TermVariant;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.EventRepository;
 import org.example.beatmybet.repository.TermRepository;
@@ -75,10 +78,14 @@ public class TermServiceImpl implements TermService {
 
     private List<TermVariantDTO> generateTermVariants(Term term) {
         return term.getVariants().stream()
-                .map(variant -> TermVariantDTO.builder()
-                        .termVarTitle(termVariantRepository.findOpposite(term.getId(), variant.getId()).getName())
-                        .bids(bidService.bidsByTermVar(variant.getId()))
-                        .build())
+                .map(variant -> {
+                    TermVariant opposite = termVariantRepository.findOpposite(term.getId(), variant.getId());
+                    return TermVariantDTO.builder()
+                            .termVar(opposite.getId())
+                            .termVarTitle(opposite.getName())
+                            .bids(bidService.bidsByTermVar(variant.getId()))
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -91,7 +98,7 @@ public class TermServiceImpl implements TermService {
             bid.setTermVariant(termVariant);
             bid.setKoef(bidDTO.getKoef());
             bidService.addBid(bid, bidDTO.getSum());
-        }else {
+        } else {
             throw new NotFoundException("term variant", bidDTO.getIdVar());
         }
     }

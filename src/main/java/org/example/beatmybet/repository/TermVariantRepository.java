@@ -9,7 +9,7 @@ import java.util.List;
 public interface TermVariantRepository extends JpaRepository<TermVariant, Long> {
 
     @Query(value = "SELECT * FROM `term_variant` " +
-            "WHERE id_term = 1", nativeQuery = true)
+            "WHERE id_term =:id", nativeQuery = true)
     List<TermVariant> findByIdTerm(long id);
 
     @Query(value = "SELECT * FROM " +
@@ -18,7 +18,7 @@ public interface TermVariantRepository extends JpaRepository<TermVariant, Long> 
     TermVariant findOpposite(long idTerm, long id);
 
     @Query(value = "SELECT * FROM `term_variant` t " +
-            "WHERE t.id != 9 AND t.id_term = (SELECT t2.id_term " +
+            "WHERE t.id !=:idVar AND t.id_term = (SELECT t2.id_term " +
             "                                 FROM `term_variant` t2 " +
             "                                 WHERE t2.id =:idVar)", nativeQuery = true)
     TermVariant findOpposite2(long idVar);

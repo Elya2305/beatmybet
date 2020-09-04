@@ -29,8 +29,17 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
             "FROM `bid` b " +
             "LEFT JOIN `posting` p ON b.id = p.id_entity " +
             "WHERE p.type_entity = 'BID' AND b.id_var =:idVar AND b.koef <=:koef " +
-            "ORDER BY koef DESC", nativeQuery = true)
+            "ORDER BY koef ASC", nativeQuery = true)
     List<Double[]> findByTermVarAndKoef(Long idVar, Double koef);
+
+
+    @Query(value = "SELECT b.koef, SUM(p.summ) " +
+            "FROM `bid` b " +
+            "LEFT JOIN `posting` p ON b.id = p.id_entity " +
+            "WHERE p.type_entity = 'BID' AND b.id_var =:idVar AND b.koef <=:koef " +
+            "GROUP BY b.koef " +
+            "ORDER BY koef ", nativeQuery = true)
+    List<Double[]> findByTermVarAndKoefGroupedBySum(Long idVar, Double koef);
 
 
     @Query(value = "SELECT summ " +

@@ -21,5 +21,7 @@ public class DealDTO {
 
     private String termVar;
 
+    private BidDTO bid;
+
     private List<BidDTO> offers;
 }

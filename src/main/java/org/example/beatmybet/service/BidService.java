@@ -1,6 +1,7 @@
 package org.example.beatmybet.service;
 
 import org.example.beatmybet.dto.BidDTO;
+import org.example.beatmybet.dto.DealDTO;
 import org.example.beatmybet.dto.HomeBidDTO;
 import org.example.beatmybet.entity.Bid;
 import org.example.beatmybet.entity.Term;
@@ -14,4 +15,6 @@ public interface BidService {
     List<BidDTO> bidsByTermVar(Long idTermVar);
 
     void addBid(Bid bid, Double sum);
+
+    DealDTO offers(BidDTO bidDTO);
 }

@@ -21,5 +21,7 @@ public class TermVariantDTO {
 
     private String termVarTitle;
 
+    private Long termVar;
+
     private List<BidDTO> bids;
 }
