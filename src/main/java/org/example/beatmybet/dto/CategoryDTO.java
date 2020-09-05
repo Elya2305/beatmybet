@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,9 +20,9 @@ import java.util.Set;
 public class CategoryDTO implements Serializable {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private long id;
+    private Long id;
 
     private String name;
 
-    private Set<SubCategoryDto> subCategories;
+    private List<CategoryDTO> subCategories;
 }

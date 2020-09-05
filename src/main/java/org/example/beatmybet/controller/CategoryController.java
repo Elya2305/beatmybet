@@ -16,11 +16,6 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping("/all")
-    public List<CategoryDTO> getAllCategories(){
-        return categoryService.getAllCategories();
-    }
-
     @GetMapping("/main")
     public List<CategoryDTO> getMainCategories() {
         return categoryService.getMainCategories();

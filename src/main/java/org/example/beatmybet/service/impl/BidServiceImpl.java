@@ -126,5 +126,4 @@ public class BidServiceImpl implements BidService {
     private double oppositeKoef(double k) {
         return k / (k - 1);
     }
-
 }

@@ -6,11 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface CategoryService {
-    List<Serializable> getAllCategoriesForHomePage();
-
-    List<CategoryDTO> getAllCategoriesForHomePage2();
-
-    List<CategoryDTO> getAllCategories();
 
     List<CategoryDTO> getMainCategories();
 
