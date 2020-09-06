@@ -5,20 +5,14 @@ import org.example.beatmybet.entity.Category;
 import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.CategoryRepository;
 import org.example.beatmybet.service.impl.CategoryServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +20,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
-@RunWith(MockitoJUnitRunner.class)
 @TestExecutionListeners(MockitoTestExecutionListener.class)
 public class CategoryServiceTest {
 
@@ -38,7 +31,7 @@ public class CategoryServiceTest {
     private static final Category BASKETBALL = new Category();
     private static final Category AMERICAN_FOOTBALL = new Category();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         categoryRepository = mock(CategoryRepository.class);
         categoryService = new CategoryServiceImpl(categoryRepository);
@@ -69,8 +62,6 @@ public class CategoryServiceTest {
         doReturn(categories).when(categoryRepository).findAll();
         doReturn(Optional.of(SPORT)).when(categoryRepository).findById(SPORT.getId());
         doReturn(Optional.of(FOOTBALL)).when(categoryRepository).findById(FOOTBALL.getId());
-        doReturn(Optional.of(BASKETBALL)).when(categoryRepository).findById(BASKETBALL.getId());
-        doReturn(Optional.of(AMERICAN_FOOTBALL)).when(categoryRepository).findById(AMERICAN_FOOTBALL.getId());
     }
 
     private CategoryDTO getCategoryDto(long id, String name, List<CategoryDTO> subCategories) {
@@ -83,6 +74,7 @@ public class CategoryServiceTest {
 
     @Test
     public void getAllCategoriesForHomePage() {
+        System.out.println(FOOTBALL);
         CategoryDTO footballDto = getCategoryDto(FOOTBALL.getId(), FOOTBALL.getName(), null);
         CategoryDTO basketballDto = getCategoryDto(BASKETBALL.getId(), BASKETBALL.getName(), null);
         CategoryDTO sportDto = getCategoryDto(SPORT.getId(), SPORT.getName(), List.of(footballDto, basketballDto));
