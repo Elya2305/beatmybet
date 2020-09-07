@@ -10,9 +10,11 @@ import java.util.List;
 public interface EventService {
     void addEvent(MainEventDTO eventDto);
 
-    List<? extends BaseEventDTO> getAllEventWithMostPopularBid(Event.Order order, int page);
+    List<HomeEventDTO> getAllEventWithMostPopularBid(Event.Order order, int page);
 
     HomeEventDTO getHomeEventDto(Event event);
 
     MainEventDTO termsByEvent(long id);
+
+    List<HomeEventDTO> tester();
 }

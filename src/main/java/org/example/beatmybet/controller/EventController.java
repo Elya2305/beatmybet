@@ -1,6 +1,7 @@
 package org.example.beatmybet.controller;
 
 import org.example.beatmybet.dto.BaseEventDTO;
+import org.example.beatmybet.dto.HomeEventDTO;
 import org.example.beatmybet.dto.MainEventDTO;
 import org.example.beatmybet.dto.ResponseStatusDto;
 import org.example.beatmybet.entity.Event;
@@ -22,6 +23,13 @@ public class EventController {
     public List<? extends BaseEventDTO> getAllEvents(@PathVariable String order, @RequestParam int page) {
         return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page);
     }
+
+    @GetMapping
+    public List<HomeEventDTO> test() {
+        return eventService.tester();
+    }
+
+
 
     @PostMapping("/add") //@Principal user
     public ResponseStatusDto addEvent(MainEventDTO eventDto) {

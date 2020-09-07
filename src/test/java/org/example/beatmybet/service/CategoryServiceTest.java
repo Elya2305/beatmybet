@@ -7,6 +7,7 @@ import org.example.beatmybet.repository.CategoryRepository;
 import org.example.beatmybet.service.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.mock;
 public class CategoryServiceTest {
 
     private CategoryService categoryService;
+    @Mock
     private CategoryRepository categoryRepository;
 
     private static final Category SPORT = new Category();
@@ -33,7 +35,6 @@ public class CategoryServiceTest {
 
     @BeforeEach
     public void setUp() {
-        categoryRepository = mock(CategoryRepository.class);
         categoryService = new CategoryServiceImpl(categoryRepository);
 
         SPORT.setId(1L);

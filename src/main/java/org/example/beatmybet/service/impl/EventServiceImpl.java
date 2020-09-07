@@ -51,30 +51,37 @@ public class EventServiceImpl implements EventService {
         eventRepository.save(event);
     }
 
-    public List<? extends BaseEventDTO> getAllEventWithMostPopularBid(Event.Order order, int page) {
+    public List<HomeEventDTO> getAllEventWithMostPopularBid(Event.Order order, int page) {
         return sortBy(eventRepository.findAll()
                 .stream()
                 .map(this::getHomeEventDto)
                 .collect(Collectors.toList()), order, page);
     }
 
+    public List<HomeEventDTO> tester(){
+        return eventRepository.findAll()
+                .stream()
+                .map(this::getHomeEventDto)
+                .collect(Collectors.toList());
+    }
+
     public HomeEventDTO getHomeEventDto(Event event) {
         HomeEventDTO eventDTO = new HomeEventDTO();
         setBasicsAttributes(event, eventDTO);
-
         Term popularTerm = termService.mostPopularTermByEvent(event);
-
-        eventDTO.setTitleTerm(popularTerm.getName());
-        eventDTO.setBids(bidService.homeBidDTOsByTerm(popularTerm));
+        if(popularTerm != null) {
+            eventDTO.setTitleTerm(popularTerm.getName());
+            eventDTO.setBids(bidService.homeBidDTOsByTerm(popularTerm));
+        }
         return eventDTO;
     }
 
-    private List<? extends BaseEventDTO> sortBy(List<? extends BaseEventDTO> list, Event.Order order, int page) {
+    private List<HomeEventDTO> sortBy(List<HomeEventDTO> list, Event.Order order, int page) {
         switch (order) {
             case date:
                 list.sort((Comparator.comparing(BaseEventDTO::getDateStop)).reversed());
             case popular:
-                list.sort((Comparator.comparingInt(BaseEventDTO::getAmountOfBids)));
+                list.sort((Comparator.comparingInt(BaseEventDTO::getAmountOfBids)).reversed());
         }
         int first = SIZE_OF_PAGE * (page - 1);
         int last = Math.min(SIZE_OF_PAGE * (page - 1) + 2, list.size());
