@@ -17,4 +17,12 @@ public class HomeEventDTO extends BaseEventDTO {
     private String titleTerm;
 
     private List<HomeBidDTO> bids;
+
+    @Override
+    public String toString() {
+        return "HomeEventDTO{" +
+                "titleTerm='" + titleTerm + '\'' +
+                ", dateStop=" + getDateStop() +
+                '}';
+    }
 }

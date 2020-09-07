@@ -15,6 +15,4 @@ public interface EventService {
     HomeEventDTO getHomeEventDto(Event event);
 
     MainEventDTO termsByEvent(long id);
-
-    List<HomeEventDTO> tester();
 }

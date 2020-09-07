@@ -58,13 +58,6 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList()), order, page);
     }
 
-    public List<HomeEventDTO> tester(){
-        return eventRepository.findAll()
-                .stream()
-                .map(this::getHomeEventDto)
-                .collect(Collectors.toList());
-    }
-
     public HomeEventDTO getHomeEventDto(Event event) {
         HomeEventDTO eventDTO = new HomeEventDTO();
         setBasicsAttributes(event, eventDTO);
@@ -79,9 +72,10 @@ public class EventServiceImpl implements EventService {
     private List<HomeEventDTO> sortBy(List<HomeEventDTO> list, Event.Order order, int page) {
         switch (order) {
             case date:
-                list.sort((Comparator.comparing(BaseEventDTO::getDateStop)).reversed());
+                list.sort((Comparator.comparing(HomeEventDTO::getDateStop)));
+                break;
             case popular:
-                list.sort((Comparator.comparingInt(BaseEventDTO::getAmountOfBids)).reversed());
+                list.sort((Comparator.comparingInt(HomeEventDTO::getAmountOfBids)).reversed());
         }
         int first = SIZE_OF_PAGE * (page - 1);
         int last = Math.min(SIZE_OF_PAGE * (page - 1) + 2, list.size());

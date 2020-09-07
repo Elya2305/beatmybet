@@ -49,11 +49,11 @@ public class EventServiceTest {
     private static final Category PRESIDENT_SELECTIONS = new Category();
 
     private static final Event PRESIDENT_UKRAINE = generateEvent(1L, PRESIDENT_SELECTIONS, LocalDateTime.now(), "president selection in Ukraine",
-            LocalDateTime.of(2020, Month.MAY, 23, 1, 1), LocalDateTime.of(2020, Month.APRIL, 23, 1, 1));
+            LocalDateTime.of(2020, Month.JUNE, 23, 1, 1), LocalDateTime.of(2020, Month.APRIL, 23, 1, 1));
     private static final Event PRESIDENT_GERMANY = generateEvent(2L, PRESIDENT_SELECTIONS, LocalDateTime.now(), "president selection in Africa",
             LocalDateTime.of(2020, Month.MAY, 23, 1, 1), LocalDateTime.of(2020, Month.APRIL, 23, 1, 1));
     private static final Event PRESIDENT_USA = generateEvent(3L, PRESIDENT_SELECTIONS, LocalDateTime.now(), "president selection in USA",
-            LocalDateTime.of(2020, Month.MAY, 23, 1, 1), LocalDateTime.of(2020, Month.APRIL, 23, 1, 1));
+            LocalDateTime.of(2020, Month.AUGUST, 23, 1, 1), LocalDateTime.of(2020, Month.APRIL, 23, 1, 1));
 
     private static final Term ZELENSKII = generateTerm(1L, PRESIDENT_UKRAINE, "Zelenskii will win");
     private static final Term SHTANMAIER = generateTerm(2L, PRESIDENT_GERMANY, "Shtanmaier will win");
@@ -163,9 +163,18 @@ public class EventServiceTest {
         usaEvent.setTitleTerm(TRUMP.getName());
         usaEvent.setBids(List.of(new HomeBidDTO("Yes", 2.4), new HomeBidDTO("No", 8.7)));
 
+        List<HomeEventDTO> expectedPage1 = List.of(germanEvent, ukraineEvent);
+        List<HomeEventDTO> actualPage1 = eventService.getAllEventWithMostPopularBid(Event.Order.date, FIRST_PAGE);
 
+        List<HomeEventDTO> expectedPage2 = List.of(usaEvent);
+        List<HomeEventDTO> actualPage2 = eventService.getAllEventWithMostPopularBid(Event.Order.date, SECOND_PAGE);
 
+        List<HomeEventDTO> expectedPage3 = List.of();
+        List<HomeEventDTO> actualPage3 = eventService.getAllEventWithMostPopularBid(Event.Order.date, THIRD_PAGE);
 
+        assertEquals(expectedPage1, actualPage1);
+        assertEquals(expectedPage2, actualPage2);
+        assertEquals(expectedPage3, actualPage3);
     }
 
 }

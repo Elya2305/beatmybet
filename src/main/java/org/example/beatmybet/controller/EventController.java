@@ -24,12 +24,6 @@ public class EventController {
         return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page);
     }
 
-    @GetMapping
-    public List<HomeEventDTO> test() {
-        return eventService.tester();
-    }
-
-
 
     @PostMapping("/add") //@Principal user
     public ResponseStatusDto addEvent(MainEventDTO eventDto) {

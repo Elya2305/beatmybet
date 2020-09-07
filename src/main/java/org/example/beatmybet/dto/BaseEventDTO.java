@@ -38,5 +38,4 @@ public class BaseEventDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer amountOfBids;
-
 }
