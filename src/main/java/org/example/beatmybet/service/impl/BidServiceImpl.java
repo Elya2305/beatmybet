@@ -78,7 +78,7 @@ public class BidServiceImpl implements BidService {
             BidDTO offerBid = offers.get(counter++);
 
             if (offerBid.getSum().equals(sumUser) || offerBid.getSum() > sumUser) {
-                if(offerBid.getSum() > sumUser) {
+                if (offerBid.getSum() > sumUser) {
                     offerBid.setSum(sumUser);
                 }
                 offerBid.setFutureDeal(true);

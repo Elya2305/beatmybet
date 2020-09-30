@@ -1,8 +1,11 @@
 package org.example.beatmybet.repository;
 
+import org.example.beatmybet.dto.BidDTO;
+import org.example.beatmybet.dto.TestDto;
 import org.example.beatmybet.entity.Bid;
 import org.example.beatmybet.entity.Term;
 import org.example.beatmybet.entity.TermVariant;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,7 +21,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
 
     List<Bid> findByTermVariant(TermVariant termVariant);
 
-    @Query(value = "SELECT b.koef, SUM(p.summ) " +
+    @Query(value = "SELECT b.koef as 'koef', SUM(p.summ) as 'sum' " +
             "FROM `bid` b " +
             "LEFT JOIN `posting` p ON b.id = p.id_entity " +
             "WHERE p.type_entity = 'BID' AND b.id_var =:idVar " +

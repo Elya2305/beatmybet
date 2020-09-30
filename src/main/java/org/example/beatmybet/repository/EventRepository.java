@@ -18,7 +18,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     nativeQuery = true)
     Integer countAmountOfBids(@Param("id") Long id);
 
-    List<Event> findAllByOrderByDateDesc();
-
     Page<Event> findAll(Pageable pageable);
 }

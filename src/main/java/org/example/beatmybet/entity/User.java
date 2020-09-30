@@ -41,5 +41,4 @@ public class User implements Serializable, GlobalFinanceEntity {
     public FinanceType getType() {
         return FinanceType.USER;
     }
-
 }

@@ -23,21 +23,25 @@ import java.util.stream.Collectors;
 
 @Service
 public class TermServiceImpl implements TermService {
-    @Autowired
     private TermRepository termRepository;
 
-    @Autowired
     private EventRepository eventRepository;
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private TermVariantRepository termVariantRepository;
 
-    @Autowired
     private BidService bidService;
 
+    @Autowired
+    public TermServiceImpl(TermRepository termRepository, EventRepository eventRepository, UserRepository userRepository,
+                           TermVariantRepository termVariantRepository, BidService bidService) {
+        this.termRepository = termRepository;
+        this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
+        this.termVariantRepository = termVariantRepository;
+        this.bidService = bidService;
+    }
 
     public void create(TermDTO termDTO, long idEvent) {
         Optional<Event> event = eventRepository.findById(idEvent);
@@ -81,7 +85,7 @@ public class TermServiceImpl implements TermService {
                 .map(variant -> {
                     TermVariant opposite = termVariantRepository.findOpposite(term.getId(), variant.getId());
                     return TermVariantDTO.builder()
-                            .termVar(opposite.getId())
+                            .termId(opposite.getId())
                             .termVarTitle(opposite.getName())
                             .bids(bidService.bidsByTermVar(variant.getId()))
                             .build();
@@ -95,8 +99,8 @@ public class TermServiceImpl implements TermService {
             TermVariant termVariant = termVariantRepository.getOne(bidDTO.getIdVar());
             Bid bid = new Bid();
             bid.setTerm(termVariant.getTerm());
-            bid.setTermVariant(termVariant);
             bid.setKoef(bidDTO.getKoef());
+            bid.setTermVariant(termVariant);
             bidService.addBid(bid, bidDTO.getSum());
         } else {
             throw new NotFoundException("term variant", bidDTO.getIdVar());

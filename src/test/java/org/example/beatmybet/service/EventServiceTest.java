@@ -1,12 +1,11 @@
 package org.example.beatmybet.service;
 
 
-import org.example.beatmybet.dto.BaseEventDTO;
-import org.example.beatmybet.dto.HomeBidDTO;
-import org.example.beatmybet.dto.HomeEventDTO;
+import org.example.beatmybet.dto.*;
 import org.example.beatmybet.entity.Category;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.entity.Term;
+import org.example.beatmybet.exception.NotFoundException;
 import org.example.beatmybet.repository.CategoryRepository;
 import org.example.beatmybet.repository.EventRepository;
 import org.example.beatmybet.repository.UserRepository;
@@ -21,8 +20,10 @@ import org.springframework.test.context.TestExecutionListeners;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
@@ -84,7 +85,10 @@ public class EventServiceTest {
         doReturn(5).when(eventRepository).countAmountOfBids(PRESIDENT_GERMANY.getId());
         doReturn(6).when(eventRepository).countAmountOfBids(PRESIDENT_USA.getId());
 
+        doReturn(Optional.of(PRESIDENT_UKRAINE)).when(eventRepository).findById(PRESIDENT_UKRAINE.getId());
+        doReturn(PRESIDENT_UKRAINE).when(eventRepository).getOne(PRESIDENT_UKRAINE.getId());
 
+        doReturn(getTermDTOs()).when(termService).allTermsByEvent(PRESIDENT_UKRAINE);
     }
 
     private static Event generateEvent(Long id, Category category, LocalDateTime date, String name, LocalDateTime dateStop, LocalDateTime dateEnd) {
@@ -104,6 +108,26 @@ public class EventServiceTest {
         term.setEvent(event);
         term.setName(name);
         return term;
+    }
+
+    private static List<TermDTO> getTermDTOs(){
+        TermDTO zelenskiiWinner = new TermDTO();
+        zelenskiiWinner.setId(1L);
+        zelenskiiWinner.setTitle("Zelenskii will win");
+        zelenskiiWinner.setVariants(List.of(
+                new TermVariantDTO("Yes", 1L, List.of(new BidDTO(120.0, 1.2))),
+                new TermVariantDTO("No", 1L, List.of(new BidDTO(150.0, 3.2)))
+        ));
+
+        TermDTO poroshenkoWinner = new TermDTO();
+        poroshenkoWinner.setId(2L);
+        poroshenkoWinner.setTitle("Poroshenko will win");
+        poroshenkoWinner.setVariants(List.of(
+                new TermVariantDTO("Yes", 1L, List.of(new BidDTO(120.0, 1.2))),
+                new TermVariantDTO("No", 1L, List.of(new BidDTO(150.0, 3.2)))
+        ));
+
+        return List.of(zelenskiiWinner, poroshenkoWinner);
     }
 
     private void setBasicsAttributes(Event event, BaseEventDTO baseEventDTO) {
@@ -177,4 +201,15 @@ public class EventServiceTest {
         assertEquals(expectedPage3, actualPage3);
     }
 
+    @Test
+    void termsByEvent() {
+        MainEventDTO expected = new MainEventDTO();
+        setBasicsAttributes(PRESIDENT_UKRAINE, expected);
+        expected.setAllTerms(getTermDTOs());
+
+        MainEventDTO actual = eventService.termsByEvent(PRESIDENT_UKRAINE.getId());
+
+        assertEquals(expected, actual);
+        assertThrows(NotFoundException.class, () -> eventService.termsByEvent(1000));
+    }
 }

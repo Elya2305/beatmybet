@@ -16,12 +16,4 @@ public class HomeBidDTO {
     private String variant;
 
     private Double koef;
-
-    @Override
-    public String toString() {
-        return "HomeBidDTO{" +
-                "variant='" + variant + '\'' +
-                ", koef=" + koef +
-                '}';
-    }
 }
