@@ -28,5 +28,4 @@ public class TermController {
         return new ResponseStatusDto(HttpStatus.OK.value(),
                 "new bid was sent by user 1 on variant " + bidDTO.getIdVar());
     }
-
 }
