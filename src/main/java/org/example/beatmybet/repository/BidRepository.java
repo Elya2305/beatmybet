@@ -51,5 +51,4 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     Double sumByBid(long idEntity);
 
     List<Bid> findByTermVariantAndKoefOrderByDateDesc(TermVariant termVariant, Double koef);
-
 }

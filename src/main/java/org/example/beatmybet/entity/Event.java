@@ -15,17 +15,14 @@ import java.util.List;
 @Entity
 @Data
 @RequiredArgsConstructor
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "events")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
     private Long id;
 
     @JsonManagedReference
-    @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idcat")
     private Category category;
@@ -51,6 +48,8 @@ public class Event {
     @NonNull
     @Column(name = "data_end")
     private LocalDateTime dateEnd;
+
+    private Long totalBid;
 
     @JsonBackReference
     @ToString.Exclude

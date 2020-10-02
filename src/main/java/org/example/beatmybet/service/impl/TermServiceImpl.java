@@ -1,8 +1,8 @@
 package org.example.beatmybet.service.impl;
 
 import org.example.beatmybet.dto.BidDTO;
-import org.example.beatmybet.dto.TermDTO;
-import org.example.beatmybet.dto.TermVariantDTO;
+import org.example.beatmybet.dto.TermDto;
+import org.example.beatmybet.dto.TermVariantDto;
 import org.example.beatmybet.entity.Bid;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.entity.Term;
@@ -14,6 +14,7 @@ import org.example.beatmybet.repository.TermVariantRepository;
 import org.example.beatmybet.repository.UserRepository;
 import org.example.beatmybet.service.BidService;
 import org.example.beatmybet.service.TermService;
+import org.hibernate.boot.model.source.spi.IdentifierSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class TermServiceImpl implements TermService {
         this.bidService = bidService;
     }
 
-    public void create(TermDTO termDTO, long idEvent) {
+    public void create(TermDto termDTO, long idEvent) {
         Optional<Event> event = eventRepository.findById(idEvent);
         if (event.isPresent()) {
             Term term = new Term();
@@ -68,24 +69,25 @@ public class TermServiceImpl implements TermService {
             Long termId = termRepository.getMostPopularTermFromTerms(idTerms)[0];
             return termRepository.getOne(termId);
         }
-        return null;
+        return Term.empty();
     }
 
-    public List<TermDTO> allTermsByEvent(Event event) {
+    public List<TermDto> allTermsByEvent(Event event) {
         return event.getTerms().stream()
-                .map(term -> TermDTO.builder()
+                .map(term -> TermDto.builder()
+                        .id(term.getId())
                         .title(term.getName())
                         .variants(generateTermVariants(term))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<TermVariantDTO> generateTermVariants(Term term) {
+    private List<TermVariantDto> generateTermVariants(Term term) {
         return term.getVariants().stream()
                 .map(variant -> {
                     TermVariant opposite = termVariantRepository.findOpposite(term.getId(), variant.getId());
-                    return TermVariantDTO.builder()
-                            .termId(opposite.getId())
+                    return TermVariantDto.builder()
+                            .termVarId(opposite.getId())
                             .termVarTitle(opposite.getName())
                             .bids(bidService.bidsByTermVar(variant.getId()))
                             .build();

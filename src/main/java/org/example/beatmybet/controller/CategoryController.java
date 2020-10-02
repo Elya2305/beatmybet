@@ -3,6 +3,8 @@ package org.example.beatmybet.controller;
 
 import org.example.beatmybet.dto.CategoryDTO;
 import org.example.beatmybet.service.CategoryService;
+import org.example.beatmybet.web.ApiResponse;
+import org.example.beatmybet.web.Responses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +19,18 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping("/main")
-    public List<CategoryDTO> getMainCategories() {
-        return categoryService.getMainCategories();
-
+    public ApiResponse<List<CategoryDTO>> getMainCategories() {
+        return Responses.okResponse(categoryService.getMainCategories());
     }
 
     @GetMapping("/subcategories/{id}")
-    public List<CategoryDTO> getSubcategories(@PathVariable("id") Long id) {
-        return categoryService.getSubcategories(id);
+    public ApiResponse<List<CategoryDTO>> getSubcategories(@PathVariable("id") Long id) {
+        return Responses.okResponse(categoryService.getSubcategories(id));
 
     }
 
     @GetMapping("{id}")
-    public CategoryDTO getById(@PathVariable("id") Long id){
-        return categoryService.getById(id);
-
+    public ApiResponse<CategoryDTO> getById(@PathVariable("id") Long id){
+        return Responses.okResponse(categoryService.getById(id));
     }
 }

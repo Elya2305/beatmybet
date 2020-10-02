@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class BaseEventDTO {
+public class BaseEventDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 

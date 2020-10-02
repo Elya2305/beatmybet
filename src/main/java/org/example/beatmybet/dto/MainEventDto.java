@@ -1,18 +1,20 @@
 package org.example.beatmybet.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
+import java.util.List;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+@JsonInclude()
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
-public class ResponseStatusDto {
-    private int status;
-    private String message;
+public class MainEventDto extends BaseEventDto {
+
+    private List<TermDto> allTerms;
 }
+

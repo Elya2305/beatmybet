@@ -1,39 +1,38 @@
 package org.example.beatmybet.controller;
 
-import org.example.beatmybet.dto.BaseEventDTO;
-import org.example.beatmybet.dto.HomeEventDTO;
-import org.example.beatmybet.dto.MainEventDTO;
-import org.example.beatmybet.dto.ResponseStatusDto;
+import lombok.AllArgsConstructor;
+import org.example.beatmybet.dto.BaseEventDto;
+import org.example.beatmybet.dto.BoolResponse;
+import org.example.beatmybet.dto.EventCreateUpdateDto;
+import org.example.beatmybet.dto.MainEventDto;
 import org.example.beatmybet.entity.Event;
 import org.example.beatmybet.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.example.beatmybet.web.ApiResponse;
+import org.example.beatmybet.web.Responses;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/event")
 public class EventController {
 
-    @Autowired
-    EventService eventService;
+    private final EventService eventService;
 
     @GetMapping("/all/{order}")
-    public List<? extends BaseEventDTO> getAllEvents(@PathVariable String order, @RequestParam int page) {
-        return eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page);
+    public ApiResponse<List<? extends BaseEventDto>> getAllEvents(@PathVariable String order, @RequestParam int page) {
+        return Responses.okResponse(eventService.getAllEventWithMostPopularBid(Event.Order.valueOf(order), page));
     }
 
-
-    @PostMapping("/add") //@Principal user
-    public ResponseStatusDto addEvent(MainEventDTO eventDto) {
-        eventService.addEvent(eventDto);
-        return new ResponseStatusDto(HttpStatus.OK.value(),
-                "new event " + eventDto.getContent() + " added");
+    @PostMapping("/add")
+    public ApiResponse<BoolResponse> addEvent(EventCreateUpdateDto eventDto) {
+        boolean result = eventService.create(eventDto);
+        return Responses.okResponse(BoolResponse.of(result));
     }
 
     @GetMapping("/{id}")
-    public MainEventDTO termsByEvent(@PathVariable long id) {
+    public MainEventDto termsByEvent(@PathVariable long id) {
         return eventService.termsByEvent(id);
     }
 }

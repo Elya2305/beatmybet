@@ -38,7 +38,7 @@ public class EventServiceTest {
     @Mock
     private EventRepository eventRepository;
     @Mock
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
     @Mock
     private UserRepository userRepository;
 
@@ -62,7 +62,7 @@ public class EventServiceTest {
 
     @BeforeEach
     public void setUp() {
-        eventService = new EventServiceImpl(termService, bidService, eventRepository, categoryRepository, userRepository);
+        eventService = new EventServiceImpl(termService, bidService, eventRepository, categoryService, userRepository);
         POLITICS.setId(1L);
         POLITICS.setName("politics");
         POLITICS.setCategory(null);
@@ -110,27 +110,27 @@ public class EventServiceTest {
         return term;
     }
 
-    private static List<TermDTO> getTermDTOs(){
-        TermDTO zelenskiiWinner = new TermDTO();
+    private static List<TermDto> getTermDTOs(){
+        TermDto zelenskiiWinner = new TermDto();
         zelenskiiWinner.setId(1L);
         zelenskiiWinner.setTitle("Zelenskii will win");
         zelenskiiWinner.setVariants(List.of(
-                new TermVariantDTO("Yes", 1L, List.of(new BidDTO(120.0, 1.2))),
-                new TermVariantDTO("No", 1L, List.of(new BidDTO(150.0, 3.2)))
+                new TermVariantDto("Yes", 1L, List.of(new BidDTO(120.0, 1.2))),
+                new TermVariantDto("No", 1L, List.of(new BidDTO(150.0, 3.2)))
         ));
 
-        TermDTO poroshenkoWinner = new TermDTO();
+        TermDto poroshenkoWinner = new TermDto();
         poroshenkoWinner.setId(2L);
         poroshenkoWinner.setTitle("Poroshenko will win");
         poroshenkoWinner.setVariants(List.of(
-                new TermVariantDTO("Yes", 1L, List.of(new BidDTO(120.0, 1.2))),
-                new TermVariantDTO("No", 1L, List.of(new BidDTO(150.0, 3.2)))
+                new TermVariantDto("Yes", 1L, List.of(new BidDTO(120.0, 1.2))),
+                new TermVariantDto("No", 1L, List.of(new BidDTO(150.0, 3.2)))
         ));
 
         return List.of(zelenskiiWinner, poroshenkoWinner);
     }
 
-    private void setBasicsAttributes(Event event, BaseEventDTO baseEventDTO) {
+    private void setBasicsAttributes(Event event, BaseEventDto baseEventDTO) {
         baseEventDTO.setId(event.getId());
         baseEventDTO.setCategory(event.getCategory().getName());
         baseEventDTO.setSuperCategory(event.getCategory().getCategory().getName());
@@ -203,11 +203,11 @@ public class EventServiceTest {
 
     @Test
     void termsByEvent() {
-        MainEventDTO expected = new MainEventDTO();
+        MainEventDto expected = new MainEventDto();
         setBasicsAttributes(PRESIDENT_UKRAINE, expected);
         expected.setAllTerms(getTermDTOs());
 
-        MainEventDTO actual = eventService.termsByEvent(PRESIDENT_UKRAINE.getId());
+        MainEventDto actual = eventService.termsByEvent(PRESIDENT_UKRAINE.getId());
 
         assertEquals(expected, actual);
         assertThrows(NotFoundException.class, () -> eventService.termsByEvent(1000));

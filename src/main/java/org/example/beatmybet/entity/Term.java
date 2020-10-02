@@ -49,4 +49,8 @@ public class Term {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "term", cascade = CascadeType.ALL)
     List<TermVariant> variants;
+
+    public static Term empty(){
+        return new Term();
+    }
 }

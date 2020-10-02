@@ -1,6 +1,7 @@
 package org.example.beatmybet.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -12,15 +13,15 @@ import java.util.List;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DealDTO {
-    private String term;
+@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
+public class TermDto {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
 
-    private String termVar;
+    private String title;
 
-    private BidDTO bid;
-
-    private List<BidDTO> offers;
+    private List<TermVariantDto> variants;
 }

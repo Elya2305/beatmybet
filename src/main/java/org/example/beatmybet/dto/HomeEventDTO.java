@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude()
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class HomeEventDTO extends BaseEventDTO {
+public class HomeEventDTO extends BaseEventDto {
     private String titleTerm;
 
     private List<HomeBidDTO> bids;

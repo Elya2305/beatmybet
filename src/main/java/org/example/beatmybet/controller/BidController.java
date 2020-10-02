@@ -18,5 +18,4 @@ public class BidController {
         System.out.println(bidDTO);
         return bidService.offers(bidDTO);
     }
-
 }

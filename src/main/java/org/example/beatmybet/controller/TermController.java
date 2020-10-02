@@ -1,8 +1,8 @@
 package org.example.beatmybet.controller;
 
 import org.example.beatmybet.dto.BidDTO;
-import org.example.beatmybet.dto.ResponseStatusDto;
-import org.example.beatmybet.dto.TermDTO;
+import org.example.beatmybet.web.ResponseStatusDto;
+import org.example.beatmybet.dto.TermDto;
 import org.example.beatmybet.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class TermController {
     TermService termService;
 
     @PostMapping("/{idEvent}/add")
-    public ResponseStatusDto create(@PathVariable long idEvent, @RequestBody TermDTO termDTO) {
+    public ResponseStatusDto create(@PathVariable long idEvent, @RequestBody TermDto termDTO) {
         termService.create(termDTO, idEvent);
         return new ResponseStatusDto(HttpStatus.OK.value(),
                 "term '" + termDTO.getTitle() + "' was added");

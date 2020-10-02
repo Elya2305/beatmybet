@@ -3,10 +3,7 @@ package org.example.beatmybet.service.impl;
 import org.example.beatmybet.dto.BidDTO;
 import org.example.beatmybet.dto.DealDTO;
 import org.example.beatmybet.dto.HomeBidDTO;
-import org.example.beatmybet.entity.Bid;
-import org.example.beatmybet.entity.Term;
-import org.example.beatmybet.entity.TermVariant;
-import org.example.beatmybet.entity.User;
+import org.example.beatmybet.entity.*;
 import org.example.beatmybet.entity.financy.TypeOperation;
 import org.example.beatmybet.repository.BidRepository;
 import org.example.beatmybet.repository.TermRepository;
@@ -43,6 +40,7 @@ public class BidServiceImpl implements BidService {
         User userEntity = userRepository.findById(1L).get();
         financeService.post(bid, userEntity, sum, TypeOperation.Type.BID_BALANCE);
     }
+
 
     public List<HomeBidDTO> homeBidDTOsByTerm(Term term) {
         return term.getVariants()
